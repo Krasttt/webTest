@@ -68,6 +68,11 @@
                  <br>
                  <div class="col-4">
                      <a href="/addWordQuestion" class="btn btn-success ">Word</a>
+                     <h5>For example :</h5><br>
+                     <div class="form-inline">
+                         <input type="text" class="form-control" id="textArea" placeholder="Example input">
+                         <button type="button" class="btn btn-primary mb-2">Send</button>
+                     </div>
                  </div>
                  <br>
              </div>
