@@ -7,7 +7,7 @@
              </div>
              <div class="card-body row">
                  <div class="col-4">
-                     <a href="/addSingleQuestion" class="btn btn-success ">Single</a>
+                     <a href="/addSingleQuestion?id=${id}" class="btn btn-success ">Single</a>
                      <h5>For example :</h5><br>
                      <div class="form-check">
                          <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"  >
@@ -36,7 +36,7 @@
                  </div>
                  <br>
                  <div class="col-4">
-                     <a href="/addMultiQuestion" class="btn btn-success ">Multi</a>
+                     <a href="/addMultiQuestion?id=${id}" class="btn btn-success ">Multi</a>
                      <h5>For example :</h5><br>
                      <div class="form-check">
                          <div>
@@ -67,7 +67,7 @@
                  </div>
                  <br>
                  <div class="col-4">
-                     <a href="/addWordQuestion" class="btn btn-success ">Word</a>
+                     <a href="/addWordQuestion?id=${id}" class="btn btn-success ">Word</a>
                      <h5>For example :</h5><br>
                      <div class="form-inline">
                          <input type="text" class="form-control" id="textArea" placeholder="Example input">

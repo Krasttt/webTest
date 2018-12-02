@@ -4,12 +4,17 @@ import javax.persistence.*;
 
 @Entity
 public class Question {
-
     @Id
     @GeneratedValue
     private Integer id;
 
     private String text;
+
+    public Question(String text, Type type, Test test) {
+        this.text = text;
+        this.type = type;
+        this.test = test;
+    }
 
     public Type getType() {
         return type;
