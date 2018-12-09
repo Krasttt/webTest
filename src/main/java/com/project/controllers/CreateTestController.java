@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 public class CreateTestController {
@@ -142,4 +143,22 @@ public class CreateTestController {
     public String createTest() {
         return "createtest";
     }
+
+    @GetMapping("/editTest")
+    public String showEdit(
+            Model model,
+            @RequestParam Integer id
+    ){
+        List<Answer> allAnswers = new ArrayList<>();
+        Iterable<Question> questions = questionRepository.findByTestId(id);
+
+        for (Question q:questions) {
+            allAnswers.addAll(answerRepository.findByQuestionId(q.getId()));
+        }
+        model.addAttribute("allAnswers",allAnswers);
+        model.addAttribute("questions", questions);
+        model.addAttribute("id",id);
+        return "editTest";
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.project.controllers;
 
+import com.google.gson.Gson;
 import com.project.domain.Answer;
 import com.project.domain.Question;
 import com.project.domain.Test;
@@ -10,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Controller
 public class TestController {
@@ -29,12 +34,18 @@ public class TestController {
     public String test(
             @RequestParam(defaultValue = "1") Integer id,
             Model model) {
-
+        List<Answer> allAnswers = new ArrayList<>();
+        List<Answer> answers = new ArrayList<>();
         Iterable<Question> questions = questionRepository.findByTestId(id);//TODO
         for (Question q:questions) {
-                Iterable<Answer> answers = answerRepository.findByQuestionId(q.getId());
-            System.out.println(answers.toString());
+            answers.addAll(answerRepository.findByQuestionId(q.getId()));
         }
+        while (!answers.isEmpty()){
+            int index = new Random().nextInt(answers.size());
+            allAnswers.add(answers.get(index));
+            answers.remove(index);
+        }
+        model.addAttribute("allAnswers",allAnswers);
         model.addAttribute("questions", questions);
         return "test";
     }
@@ -48,6 +59,7 @@ public class TestController {
         else model.addAttribute("duration", 0);
 
         model.addAttribute("test", test);
+
         return "info";
     }
 }
