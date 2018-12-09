@@ -25,7 +25,7 @@ public class RestController {
 
     @Modifying
     @PostMapping("/editTest")
-    public List<Answer> greeting(@RequestParam (required = false) String id,@RequestParam Map<String,String> json) {
+    public List<Answer> editQuestion(@RequestParam (required = false) String id, @RequestParam Map<String,String> json) {
         List<Answer> answers =new ArrayList<>();
         for (int i =0; i<json.size()/4;i++){
             Answer ans = answerRepository.findById(Integer.parseInt(json.get("answers["+i+"][id]")));
