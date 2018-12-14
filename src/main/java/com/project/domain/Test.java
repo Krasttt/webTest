@@ -2,6 +2,7 @@ package com.project.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.Duration;
 
@@ -9,12 +10,12 @@ import java.time.Duration;
 public class Test {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
     private Integer amountQuestions;
-    private String discription;
+    private String description;
     public Duration duration;
 
     public Test() {
@@ -23,7 +24,7 @@ public class Test {
     public Test(String name, String description, Integer amountQuestions, Duration duration) {
         this.name = name;
         this.amountQuestions = amountQuestions;
-        this.discription = description;
+        this.description = description;
         this.duration = duration;
     }
 
@@ -35,12 +36,12 @@ public class Test {
         this.duration = duration;
     }
 
-    public String getDiscription() {
-        return discription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDiscription(String discription) {
-        this.discription = discription;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Integer getId() {

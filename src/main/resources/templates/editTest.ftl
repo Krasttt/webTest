@@ -24,11 +24,10 @@
                                 var answer = {
                                     id:${answer.id},
                                     text: "${answer.text}",
-                                    q_id:${answer.question.id},
                                     correct:${answer.correct?c}};
                                 answers${question.id}.push(answer)
                                 if (${answer.correct?c}){
-                                    $("#radioBtn"+answer.q_id +""+ answer.id)[0].checked = true;
+                                    $("#radioBtn${question.id}"+ answer.id)[0].checked = true;
                                 }
                             </script>
                     </#if>
@@ -47,21 +46,19 @@
                                     answers${question.id}[i].correct = false;
                                 }
                             }
-                            $.post(
-                                    "/editTest",
-                                    {
-                                        answers: answers${question.id}
-                                    },
-                                    onAjaxSuccess
-                            );
-
-                            function onAjaxSuccess(data) {
-                                console.log(data);
-                                for (var i = 0;i<data.length;i++){
-                                    $("#textArea"+data[i].question.id +""+ data[i].id)[0].placeholder =  data[i].text;
+                            $.ajax({
+                                type:"POST",
+                                contentType:"application/json",
+                                url:"/editTest/${question.id}",
+                                data:JSON.stringify(answers${question.id}),
+                                dataType:"json",
+                                success: function(data){
+                                    for (var i = 0;i<data.length;i++){
+                                        $("#textArea"+data[i].question.id +""+ data[i].id)[0].placeholder =  data[i].text;
+                                    }
+                                    alert("SUCCESS")
                                 }
-                                alert("SUCCESS")
-                            }
+                            });
                         });
                     });
                 </script>
@@ -83,11 +80,10 @@
                                  var answer = {
                                      id:${answer.id},
                                      text: "${answer.text}",
-                                     q_id:${answer.question.id},
                                      correct:${answer.correct?c}};
                                  answers${question.id}.push(answer)
                                  if (${answer.correct?c}){
-                                     $("#check"+answer.q_id +""+ answer.id)[0].checked = true;
+                                     $("#check"+${question.id} +""+ answer.id)[0].checked = true;
                                  }
                              </script>
                             </#if>
@@ -104,22 +100,19 @@
                                         answers${question.id}[i].correct = false;
                                     }
                                 }
-                                $.post(
-                                        "/editTest",
-                                        {
-                                            answers: answers${question.id}
-                                        },
-                                        onAjaxSuccess
-                                );
-
-                                function onAjaxSuccess(data) {
-                                    console.log(data);
-                                    for (var i = 0;i<data.length;i++){
-                                        $("#textArea"+data[i].question.id +""+ data[i].id)[0].placeholder =  data[i].text;
+                                $.ajax({
+                                    type:"POST",
+                                    contentType:"application/json",
+                                    url:"/editTest/${question.id}",
+                                    data:JSON.stringify(answers${question.id}),
+                                    dataType:"json",
+                                    success: function(data){
+                                        for (var i = 0;i<data.length;i++){
+                                            $("#textArea"+data[i].question.id +""+ data[i].id)[0].placeholder =  data[i].text;
+                                        }
+                                        alert("SUCCESS")
                                     }
-                                    alert("SUCCESS")
-
-                                }
+                                });
                             });
                         });
                     </script>
@@ -141,7 +134,6 @@
                              var answer = {
                                  id:${answer.id},
                                  text: "${answer.text}",
-                                 q_id:${answer.question.id},
                                  correct:${answer.correct?c}};
                              answers${question.id}.push(answer)
                          </script>
@@ -154,27 +146,24 @@
                                  answers${question.id}[i].text = $("#textArea${question.id}").val();
                                  $("#textArea${question.id}").val('');
                              }
-                             $.post(
-                                     "/editTest",
-                                     {
-                                         answers: answers${question.id}
-                                     },
-                                     onAjaxSuccess
-                             );
-
-                             function onAjaxSuccess(data) {
-                                 console.log(data);
-                                 for (var i = 0;i<data.length;i++){
-                                     $("#textArea"+data[i].question.id)[0].placeholder =  data[i].text;
+                             $.ajax({
+                                 type:"POST",
+                                 contentType:"application/json",
+                                 url:"/editTest/${question.id}",
+                                 data:JSON.stringify(answers${question.id}),
+                                 dataType:"json",
+                                 success: function(data){
+                                     for (var i = 0;i<data.length;i++){
+                                         $("#textArea"+data[i].question.id)[0].placeholder =  data[i].text;
+                                     }
+                                     alert("SUCCESS")
                                  }
-                                 alert("SUCCESS")
-                             }
+                             });
                          });
                      });
                  </script>
                 </#if>
             </div>
-
         </div>
     <br>
     </#list>

@@ -9,7 +9,7 @@
             Add question
         </button>
         <div class="card-body">
-            <h5>Description : ${test.discription?if_exists}<br><br></h5>
+            <h5>Description : ${test.description?if_exists}<br><br></h5>
             <h5> Test contain <b>${test.amountQuestions}</b> questions.<br><br></h5>
             <h5>Time : ${duration} min</h5>
         </div>
@@ -19,10 +19,4 @@
     </div>
 </form>
 
-<script>
-var obj = {id:${test.id}, name:"${test.name}",discription:"${test.discription}"};
-console.log(obj);
-var json = JSON.stringify(obj);
-console.log(json);
-</script>
 </@c.page>

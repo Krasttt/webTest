@@ -5,10 +5,19 @@ import javax.persistence.*;
 @Entity
 public class Question {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String text;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @ManyToOne()
+    private Test test;
+
+    @ManyToOne
+    private Result result;
 
     public Question(String text, Type type, Test test) {
         this.text = text;
@@ -19,15 +28,6 @@ public class Question {
     public Type getType() {
         return type;
     }
-
-    @Enumerated(EnumType.STRING)
-    private Type type;
-
-    @ManyToOne()
-    private Test test;
-
-    @ManyToOne
-    private Result result;
 
     public Test getTest() {
         return test;
@@ -44,7 +44,6 @@ public class Question {
     public void setResult(Result result) {
         this.result = result;
     }
-
 
     public void setType(Type type) {
         this.type = type;

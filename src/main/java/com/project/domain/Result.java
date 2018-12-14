@@ -1,16 +1,30 @@
 package com.project.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.Duration;
+import java.util.Date;
 
 @Entity
 public class Result {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private Date startTest;
+
+    public Result(Date startTest, String name, Test test) {
+        this.startTest = startTest;
+        this.name = name;
+        this.test = test;
+    }
+
+    public Date getStartTest() {
+        return startTest;
+    }
+
+    public void setStartTest(Date startTest) {
+        this.startTest = startTest;
+    }
 
     private String name;
     private Duration duration;

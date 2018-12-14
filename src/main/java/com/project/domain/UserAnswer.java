@@ -3,7 +3,8 @@ package com.project.domain;
 import javax.persistence.*;
 
 @Entity
-public class Answer {
+
+public class UserAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -14,10 +15,25 @@ public class Answer {
     @ManyToOne
     private Question question;
 
-    public Answer(String text, boolean correct, Question question) {
+    @ManyToOne
+    private Result result;
+
+    public UserAnswer() {
+    }
+
+    public UserAnswer(String text, boolean correct, Question question, Result result) {
         this.text = text;
         this.correct = correct;
         this.question = question;
+        this.result = result;
+    }
+
+    public Result getResult() {
+        return result;
+    }
+
+    public void setResult(Result result) {
+        this.result = result;
     }
 
     public Integer getId() {
@@ -52,6 +68,4 @@ public class Answer {
         this.question = question;
     }
 
-    public Answer() {
-    }
 }

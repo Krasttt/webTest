@@ -1,46 +1,62 @@
 package com.project.controllers;
 
 import com.project.domain.Answer;
-import com.project.domain.Question;
+import com.project.domain.Type;
+import com.project.domain.UserAnswer;
 import com.project.repositories.AnswerRepository;
 import com.project.repositories.QuestionRepository;
-import org.springframework.data.jpa.repository.Modifying;
+import com.project.repositories.ResultRepository;
+import com.project.repositories.UserAnswerRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
     final QuestionRepository questionRepository;
     final AnswerRepository answerRepository;
+    final UserAnswerRepository userAnswerRepository;
+    final ResultRepository resultRepository;
 
-    public RestController(QuestionRepository questionRepository, AnswerRepository answerRepository) {
+    public RestController(QuestionRepository questionRepository,
+                          AnswerRepository answerRepository,
+                          UserAnswerRepository userAnswerRepository,
+                          ResultRepository resultRepository) {
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
+        this.userAnswerRepository = userAnswerRepository;
+        this.resultRepository = resultRepository;
     }
 
-    @Modifying
-    @PostMapping("/editTest")
-    public List<Answer> editQuestion(@RequestParam (required = false) String id, @RequestParam Map<String,String> json) {
-        List<Answer> answers =new ArrayList<>();
-        for (int i =0; i<json.size()/4;i++){
-            Answer ans = answerRepository.findById(Integer.parseInt(json.get("answers["+i+"][id]")));
-
-            String text=json.get("answers["+i+"][text]");
-            Question q = questionRepository.findById(Integer.parseInt(json.get("answers["+i+"][q_id]")));
-            boolean flag = json.get("answers["+i+"][correct]").equals("true")?true:false;
-
-            if (!text.equals("")) ans.setText(text);
-            ans.setCorrect(flag);
-            ans.setQuestion(q);
-            answers.add(ans);
-
-            answerRepository.save(ans);
+    @PostMapping("/editTest/{id}")
+    public List<Answer> test(@PathVariable Integer id, @RequestBody List<Answer> answers) {
+        for (Answer answer : answers) {
+            if (answer.getText().equals("")) {
+                answer.setText(answerRepository.findById(answer.getId()).getText());
+            }
+            answer.setQuestion(questionRepository.findById(id));
         }
+        answerRepository.saveAll(answers);
         return answers;
     }
+
+    @PostMapping("/test/addAnswer/{id}/{result_id}")
+    public void confirmAnswer(@PathVariable Integer id, @PathVariable Integer result_id, @RequestBody List<Answer> answers) {
+        for (Answer answer : answers) {
+            if (questionRepository.findById(id).getType() != Type.WORD) {
+                if (answerRepository.findById(answer.getId()).isCorrect()) {
+                    userAnswerRepository.save(new UserAnswer(answer.getText(), true, questionRepository.findById(id), resultRepository.findById(result_id)));
+                } else
+                    userAnswerRepository.save(new UserAnswer(answer.getText(), false, questionRepository.findById(id), resultRepository.findById(result_id)));
+
+            } else userAnswerRepository.save(new UserAnswer(answer.getText(),
+                    answer.getText().equals(answerRepository.findById(answer.getId()).getText()),
+                    questionRepository.findById(id), resultRepository.findById(result_id)));
+        }
+        return;
+    }
+
 }
