@@ -8,24 +8,12 @@ public class UserAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String text;
     private boolean correct;
-
     @ManyToOne
     private Question question;
-
     @ManyToOne
     private UserAccount userAccount;
-
-    public UserAccount getUserAccount() {
-        return userAccount;
-    }
-
-    public void setUserAccount(UserAccount userAccount) {
-        this.userAccount = userAccount;
-    }
-
     @ManyToOne
     private Result result;
 
@@ -40,10 +28,17 @@ public class UserAnswer {
         this.userAccount=user;
     }
 
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
     public Result getResult() {
         return result;
     }
-
     public void setResult(Result result) {
         this.result = result;
     }
@@ -51,7 +46,6 @@ public class UserAnswer {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -59,7 +53,6 @@ public class UserAnswer {
     public String getText() {
         return text;
     }
-
     public void setText(String text) {
         this.text = text;
     }
@@ -67,7 +60,6 @@ public class UserAnswer {
     public boolean isCorrect() {
         return correct;
     }
-
     public void setCorrect(boolean correct) {
         this.correct = correct;
     }
@@ -75,7 +67,6 @@ public class UserAnswer {
     public Question getQuestion() {
         return question;
     }
-
     public void setQuestion(Question question) {
         this.question = question;
     }

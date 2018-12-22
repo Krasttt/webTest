@@ -21,7 +21,6 @@ public class Role implements GrantedAuthority {
     public String getType() {
         return type;
     }
-
     public void setType(String type) {
         this.type = type;
     }
@@ -29,7 +28,6 @@ public class Role implements GrantedAuthority {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }

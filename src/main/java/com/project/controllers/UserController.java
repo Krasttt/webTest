@@ -1,28 +1,31 @@
 package com.project.controllers;
 
+import com.project.domain.Result;
 import com.project.domain.UserAccount;
+import com.project.repositories.ResultRepository;
 import com.project.repositories.UserRepository;
-import org.springframework.security.core.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private final UserRepository userRepository;
-
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ResultRepository resultRepository;
     @GetMapping
-    public String showProfile(@AuthenticationPrincipal UserAccount activeUser, Model model){
+    public String showProfile(@AuthenticationPrincipal UserAccount user, Model model){
 
-        model.addAttribute("user",activeUser);
+        List<Result> results = resultRepository.findByUserId(user.getId());
+        model.addAttribute("results",results);
+        model.addAttribute("user",user);
         return "profile";
     }
 }

@@ -4,6 +4,8 @@ import com.project.domain.*;
 import com.project.repositories.AnswerRepository;
 import com.project.repositories.QuestionRepository;
 import com.project.repositories.TestRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,28 +20,30 @@ import java.util.List;
 
 @Controller
 public class CreateTestController {
+    @Autowired
+    private TestRepository testRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
 
-    private final TestRepository testRepository;
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
-
-    public CreateTestController(TestRepository testRepository, QuestionRepository questionRepository,
-                                AnswerRepository answerRepository) {
-        this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/createtest")
+    public String createTest() {
+        return "createtest";
     }
 
     @PostMapping("/createtest")
     public String createTest(
             @RequestParam String name, @RequestParam String description,
-            @RequestParam Integer amtQuestions, @RequestParam Integer duration, @AuthenticationPrincipal UserAccount user) {
+            @RequestParam Integer duration, @AuthenticationPrincipal UserAccount user) {
 
-        Test test = new Test(name, description, amtQuestions, Duration.ofMinutes(duration),user);
+        Test test = new Test(name, description, 0, Duration.ofMinutes(duration),user);
         testRepository.save(test);
         return "redirect:/tests";
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping("/addquestion")
     public String addQuestion(Model model, @RequestParam String id) {
         model.addAttribute("id",id);
@@ -64,7 +68,11 @@ public class CreateTestController {
                                    @RequestParam String answer3,
                                    @RequestParam String answer4){
 
-        Question question = new Question(textQuestion, Type.MULTI,testRepository.findById(Integer.parseInt(id)));
+        Test test = testRepository.findById(Integer.parseInt(id));
+        test.setAmountQuestions(test.getAmountQuestions()+1);
+        testRepository.save(test);
+
+        Question question = new Question(textQuestion, Type.MULTI,test);
         questionRepository.save(question);
 
         List<Answer> answers = new ArrayList<>();
@@ -73,7 +81,6 @@ public class CreateTestController {
         answers.add(new Answer(answer3,check3.equals("true"),question));
         answers.add(new Answer(answer4,check4.equals("true"),question));
         answerRepository.saveAll(answers);
-
 
         return "redirect:/tests";
     }
@@ -90,7 +97,10 @@ public class CreateTestController {
                                     @RequestParam String answer3,
                                     @RequestParam String answer4,
                                     @RequestParam String id){
-        Question question = new Question(textQuestion, Type.SINGLE,testRepository.findById(Integer.parseInt(id)));
+        Test test = testRepository.findById(Integer.parseInt(id));
+        test.setAmountQuestions(test.getAmountQuestions()+1);
+        testRepository.save(test);
+        Question question = new Question(textQuestion, Type.SINGLE,test);
         questionRepository.save(question);
 
         List<Answer> answers = new ArrayList<>();
@@ -113,32 +123,18 @@ public class CreateTestController {
                                   @RequestParam String answer,
                                   @RequestParam String id
     ){
-        Question question = new Question(textQuestion, Type.WORD,testRepository.findById(Integer.parseInt(id)));
+        Test test = testRepository.findById(Integer.parseInt(id));
+        test.setAmountQuestions(test.getAmountQuestions()+1);
+        testRepository.save(test);
+
+        Question question = new Question(textQuestion, Type.WORD,test);
         questionRepository.save(question);
 
         answerRepository.save(new Answer(answer,true,question));
         return "redirect:/tests";}
 
-    @GetMapping("/createtest")
-    public String createTest() {
-        return "createtest";
-    }
 
-    @GetMapping("/editTest")
-    public String showEdit(
-            Model model,
-            @RequestParam Integer id
-    ){
-        List<Answer> allAnswers = new ArrayList<>();
-        Iterable<Question> questions = questionRepository.findByTestId(id);
 
-        for (Question q:questions) {
-            allAnswers.addAll(answerRepository.findByQuestionId(q.getId()));
-        }
-        model.addAttribute("allAnswers",allAnswers);
-        model.addAttribute("questions", questions);
-        model.addAttribute("id",id);
-        return "editTest";
-    }
+
 
 }

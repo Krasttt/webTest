@@ -9,14 +9,15 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
     private Integer amountQuestions;
     private String description;
     private Duration duration;
-
     @ManyToOne
     private UserAccount user;
+
+    public Test() {
+    }
 
     public Test(String name, String description, Integer amountQuestions, Duration duration, UserAccount user) {
         this.name = name;
@@ -26,15 +27,9 @@ public class Test {
         this.user = user;
     }
 
-    public Test() {
-    }
-
-
-
     public Duration getDuration() {
         return duration;
     }
-
     public void setDuration(Duration duration) {
         this.duration = duration;
     }
@@ -42,7 +37,6 @@ public class Test {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -50,7 +44,6 @@ public class Test {
     public Integer getId() {
         return id;
     }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -58,7 +51,6 @@ public class Test {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -66,7 +58,6 @@ public class Test {
     public Integer getAmountQuestions() {
         return amountQuestions;
     }
-
     public void setAmountQuestions(Integer amountQuestions) {
         this.amountQuestions = amountQuestions;
     }

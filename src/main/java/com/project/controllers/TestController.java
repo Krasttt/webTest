@@ -2,13 +2,13 @@ package com.project.controllers;
 
 import com.project.domain.*;
 import com.project.repositories.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,24 +16,16 @@ import java.util.Random;
 
 @Controller
 public class TestController {
-    private final ResultRepository resultRepository;
-    private final TestRepository testRepository;
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
-    private final UserAnswerRepository userAnswerRepository;
-
-    public TestController(ResultRepository resultRepository,
-                          TestRepository testRepository,
-                          QuestionRepository questionRepository,
-                          AnswerRepository answerRepository,
-                          UserAnswerRepository userAnswerRepository) {
-        this.resultRepository = resultRepository;
-        this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
-        this.userAnswerRepository = userAnswerRepository;
-    }
-
+    @Autowired
+    private ResultRepository resultRepository;
+    @Autowired
+    private TestRepository testRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
+    @Autowired
+    private UserAnswerRepository userAnswerRepository;
 
     @RequestMapping("/test")
     public String showTest(
@@ -52,13 +44,34 @@ public class TestController {
             answers.remove(index);
         }
         model.addAttribute("result", resultRepository.save(new Result(new Date(), testRepository.findById(id).getName(),
-                testRepository.findById(id),user)));
+                testRepository.findById(id),user,2)));
         model.addAttribute("allAnswers",allAnswers);
         model.addAttribute("questions", questions);
         model.addAttribute("test",testRepository.findById(id));
         return "test";
     }
 
+    @PostMapping("/test/addAnswer/{id}/{result_id}")
+    @ResponseBody
+    public void confirmAnswer(@PathVariable Integer id, @PathVariable("result_id") Integer resultId,
+                              @RequestBody List<Answer> answers, @AuthenticationPrincipal UserAccount activeUser
+    ) {
+        Type typeQuestion = questionRepository.findById(id).getType();
+        for (Answer answer : answers) {
+            if (typeQuestion != Type.WORD) {
+                if (answerRepository.findById(answer.getId()).isCorrect()) {
+                    userAnswerRepository.save(new UserAnswer(answer.getText(), true,
+                            questionRepository.findById(id), resultRepository.findById(resultId), activeUser));
+                } else
+                    userAnswerRepository.save(new UserAnswer(answer.getText(), false,
+                            questionRepository.findById(id), resultRepository.findById(resultId), activeUser));
+
+            } else userAnswerRepository.save(new UserAnswer(answer.getText(),
+                    answer.getText().equals(answerRepository.findById(answer.getId()).getText()),
+                    questionRepository.findById(id), resultRepository.findById(resultId), activeUser));
+        }
+        return;
+    }
     @RequestMapping("/info")
     public String showTestInfo(@RequestParam String id, Model model) {
         Integer i = Integer.parseInt(id);
@@ -112,11 +125,18 @@ public class TestController {
 
         Result result = resultRepository.findById(resultId);
         result.setGrade(countRightAnswers / amountQuestions);
+        result.setDuration(Duration.ofSeconds(new Date().getSeconds()- result.getStartTest().getSeconds()));
         model.addAttribute("countRightAnswers", countRightAnswers);
         model.addAttribute("amountQuestions", amountQuestions);
         model.addAttribute("test", testRepository.findById(testId));
         model.addAttribute("result", resultRepository.save(result));
 
         return "testResult";
+    }
+    @RequestMapping("/testResult/{result_id}")
+    public String showUserResult(@PathVariable("result_id") Integer resultId,Model model){
+        Result result =resultRepository.findById(resultId);
+        model.addAttribute("result",result);
+        return "userResult";
     }
 }

@@ -3,6 +3,8 @@ package com.project.controllers;
 import com.project.domain.UserAccount;
 import com.project.repositories.RoleRepository;
 import com.project.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,14 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class RegistrationController {
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-
-    public RegistrationController(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/registration")
     public String registrationPage(){
@@ -31,6 +31,7 @@ public class RegistrationController {
         }
         userAccount.setActive(true);
         userAccount.setRole(roleRepository.findByType("user"));
+        userAccount.setPassword(passwordEncoder.encode(userAccount.getPassword()));
         userRepository.save(userAccount);
         return "redirect:/login";
     }

@@ -22,17 +22,20 @@
                     <form action="/login" method="post">
                         <div class="form-group row"><label class="col-2"> User Name : </label>
                             <div>
-                                <input class="form-control" type="text" name="username" placeholder="Username..."/>
+                                <input class="form-control" type="text" name="username"
+                                       placeholder="Username..."/ required>
                             </div>
                         </div>
                         <div class="form-group row"><label class="col-2"> Password: </label>
                             <div>
-                                <input class="form-control" type="password" name="password" placeholder="Password..."/>
+                                <input class="form-control" type="password" name="password"
+                                       placeholder="Password..."/ required>
                             </div>
                         </div>
                         <div class="form-group row"><label class="col-2"> First Name : </label>
                             <div>
-                                <input class="form-control" type="text" name="firstName" placeholder="First name..."/>
+                                <input class="form-control" type="text" name="firstName"
+                                       placeholder="First name..."/ required>
                             </div>
                         </div>
                         <div class="form-group row"><label class="col-2"> Surname : </label>
@@ -44,7 +47,6 @@
                     </form>
                 </div>
             </div>
-
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                 Submit
             </button>
