@@ -15,6 +15,7 @@
                 <form id="form1">
                     <#list allAnswers as answer><#if answer.question.id == question.id>
                     <div class="form-check mb-2">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         <input class="form-check-input" type="radio" name="radioBtn${question.id}"
                                id="radioBtn${question.id}${answer.id}" required>
                         <input type="text" class="form-control col-4" id="textArea${question.id}${answer.id}"
@@ -46,6 +47,11 @@
                                     answers${question.id}[i].correct = false;
                                 }
                             }
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            $(document).ajaxSend(function (e, xhr, options) {
+                                xhr.setRequestHeader(header, token);
+                            });
                             $.ajax({
                                 type:"POST",
                                 contentType:"application/json",
@@ -72,6 +78,8 @@
                         <#list allAnswers as answer>
                             <#if answer.question.id == question.id>
                     <div class="mb-2">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+
                         <input class="form-check-input" type="checkbox" id="check${question.id}${answer.id}">
                         <input type="text" class="form-control col-4" id="textArea${question.id}${answer.id}"
                                placeholder="${answer.text}">
@@ -100,6 +108,11 @@
                                         answers${question.id}[i].correct = false;
                                     }
                                 }
+                                var token = $("meta[name='_csrf']").attr("content");
+                                var header = $("meta[name='_csrf_header']").attr("content");
+                                $(document).ajaxSend(function (e, xhr, options) {
+                                    xhr.setRequestHeader(header, token);
+                                });
                                 $.ajax({
                                     type:"POST",
                                     contentType:"application/json",
@@ -126,6 +139,8 @@
                     <#list allAnswers as answer>
                         <#if answer.question.id == question.id>
                     <div class="form-inline">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+
                         <input type="text" class="form-control" id="textArea${question.id}"
                                placeholder="${answer.text}">
                         <button type="button" class="btn btn-primary ml-2" id="btn${question.id}">Edit</button>
@@ -146,11 +161,16 @@
                                  answers${question.id}[i].text = $("#textArea${question.id}").val();
                                  $("#textArea${question.id}").val('');
                              }
+                             var token = $("meta[name='_csrf']").attr("content");
+                             var header = $("meta[name='_csrf_header']").attr("content");
+                             $(document).ajaxSend(function (e, xhr, options) {
+                                 xhr.setRequestHeader(header, token);
+                             });
                              $.ajax({
                                  type:"POST",
                                  contentType:"application/json",
                                  url:"/editTest/${question.id}",
-                                 data:JSON.stringify(answers${question.id}),
+                                 data: JSON.stringify(answers${question.id}),
                                  dataType:"json",
                                  success: function(data){
                                      for (var i = 0;i<data.length;i++){

@@ -1,9 +1,6 @@
 package com.project.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.Duration;
 
 @Entity
@@ -16,17 +13,23 @@ public class Test {
     private String name;
     private Integer amountQuestions;
     private String description;
-    public Duration duration;
+    private Duration duration;
 
-    public Test() {
-    }
+    @ManyToOne
+    private UserAccount user;
 
-    public Test(String name, String description, Integer amountQuestions, Duration duration) {
+    public Test(String name, String description, Integer amountQuestions, Duration duration, UserAccount user) {
         this.name = name;
         this.amountQuestions = amountQuestions;
         this.description = description;
         this.duration = duration;
+        this.user = user;
     }
+
+    public Test() {
+    }
+
+
 
     public Duration getDuration() {
         return duration;

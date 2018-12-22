@@ -18,9 +18,30 @@
         <div class="card mt-5">
             <h2 class="card-header text-center ">Welcom to Tester<br>REGISTRATION</h2>
             <div class="card-body ">
-                <div class=" form-inline justify-content-center mt-3 ">
-
-                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                <div class=" mt-3 ">
+                    <form action="/login" method="post">
+                        <div class="form-group row"><label class="col-2"> User Name : </label>
+                            <div>
+                                <input class="form-control" type="text" name="username" placeholder="Username..."/>
+                            </div>
+                        </div>
+                        <div class="form-group row"><label class="col-2"> Password: </label>
+                            <div>
+                                <input class="form-control" type="password" name="password" placeholder="Password..."/>
+                            </div>
+                        </div>
+                        <div class="form-group row"><label class="col-2"> First Name : </label>
+                            <div>
+                                <input class="form-control" type="text" name="firstName" placeholder="First name..."/>
+                            </div>
+                        </div>
+                        <div class="form-group row"><label class="col-2"> Surname : </label>
+                            <div>
+                                <input class="form-control" type="text" name="surName" placeholder="Surname..."/>
+                            </div>
+                        </div>
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    </form>
                 </div>
             </div>
 
@@ -30,6 +51,7 @@
         </div>
     </form>
 </div>
+
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

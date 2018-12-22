@@ -1,12 +1,10 @@
 package com.project.controllers;
 
-import com.project.domain.Answer;
-import com.project.domain.Question;
-import com.project.domain.Test;
-import com.project.domain.Type;
+import com.project.domain.*;
 import com.project.repositories.AnswerRepository;
 import com.project.repositories.QuestionRepository;
 import com.project.repositories.TestRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,63 +15,54 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 @Controller
 public class CreateTestController {
-    final TestRepository testRepository;
-    final QuestionRepository questionRepository;
-    final AnswerRepository answerRepository;
 
-    public CreateTestController(TestRepository testRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
+    private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+
+    public CreateTestController(TestRepository testRepository, QuestionRepository questionRepository,
+                                AnswerRepository answerRepository) {
         this.testRepository = testRepository;
         this.questionRepository = questionRepository;
         this.answerRepository = answerRepository;
     }
 
-
     @PostMapping("/createtest")
-    public String showTests(
-            @RequestParam String name,
-            @RequestParam String description,
-            @RequestParam Integer amtQuestions,
-            @RequestParam Integer duration,
-            Model model
-    ) {
-        Test test = new Test(name, description, amtQuestions, Duration.ofMinutes(duration));
+    public String createTest(
+            @RequestParam String name, @RequestParam String description,
+            @RequestParam Integer amtQuestions, @RequestParam Integer duration, @AuthenticationPrincipal UserAccount user) {
+
+        Test test = new Test(name, description, amtQuestions, Duration.ofMinutes(duration),user);
         testRepository.save(test);
         return "redirect:/tests";
     }
 
     @RequestMapping("/addquestion")
-    public String addQuestion(
-            Model model,
-            @RequestParam String id
-    ) {
+    public String addQuestion(Model model, @RequestParam String id) {
         model.addAttribute("id",id);
         return "addQuestion";
     }
 
 
     @GetMapping("/addMultiQuestion")
-    public String showAddMultiQuestion(
-            Model model,
-            @RequestParam String id){
+    public String showAddMultiQuestion(Model model, @RequestParam String id) {
         model.addAttribute("id",id);
         return "addMultiQuestion";}
 
     @PostMapping("/addMultiQuestion")
-    public String addMultiQuestion(Model model,
-                                    @RequestParam String textQuestion,
-                                    @RequestParam String id,
-                                    @RequestParam(value = "check1",required = false,defaultValue = "false") String check1,
-                                    @RequestParam(value ="check2" ,required = false,defaultValue = "false") String check2,
-                                    @RequestParam(value ="check3",required = false,defaultValue = "false") String check3,
-                                    @RequestParam(value ="check4",required = false,defaultValue = "false") String check4,
-                                    @RequestParam String answer1,
-                                    @RequestParam String answer2,
-                                    @RequestParam String answer3,
-                                    @RequestParam String answer4){
+    public String addMultiQuestion(@RequestParam String textQuestion,
+                                   @RequestParam String id,
+                                   @RequestParam(value = "check1",required = false,defaultValue = "false") String check1,
+                                   @RequestParam(value ="check2" ,required = false,defaultValue = "false") String check2,
+                                   @RequestParam(value ="check3",required = false,defaultValue = "false") String check3,
+                                   @RequestParam(value ="check4",required = false,defaultValue = "false") String check4,
+                                   @RequestParam String answer1,
+                                   @RequestParam String answer2,
+                                   @RequestParam String answer3,
+                                   @RequestParam String answer4){
 
         Question question = new Question(textQuestion, Type.MULTI,testRepository.findById(Integer.parseInt(id)));
         questionRepository.save(question);
@@ -90,21 +79,17 @@ public class CreateTestController {
     }
 
     @GetMapping("/addSingleQuestion")
-    public String showSingleQuestion(
-            Model model,
-            @RequestParam String id)
-    {
+    public String showSingleQuestion(Model model, @RequestParam String id) {
         model.addAttribute("id",id);
         return "addSingleQuestion";}
 
     @PostMapping("/addSingleQuestion")
-    public String addSingleQuestion(Model model,
-                                   @RequestParam String textQuestion,
-                                   @RequestParam String corAnswer,
-                                   @RequestParam String answer2,
-                                   @RequestParam String answer3,
-                                   @RequestParam String answer4,
-                                   @RequestParam String id){
+    public String addSingleQuestion(@RequestParam String textQuestion,
+                                    @RequestParam String corAnswer,
+                                    @RequestParam String answer2,
+                                    @RequestParam String answer3,
+                                    @RequestParam String answer4,
+                                    @RequestParam String id){
         Question question = new Question(textQuestion, Type.SINGLE,testRepository.findById(Integer.parseInt(id)));
         questionRepository.save(question);
 
@@ -119,19 +104,14 @@ public class CreateTestController {
     }
 
     @GetMapping("/addWordQuestion")
-    public String showWordQuestion(
-            Model model,
-            @RequestParam String id
-    ){
+    public String showWordQuestion(Model model, @RequestParam String id) {
         model.addAttribute("id",id);
         return "addWordQuestion";}
 
     @PostMapping("/addWordQuestion")
-    public String addWordQuestion(
-            Model model,
-            @RequestParam String textQuestion,
-            @RequestParam String answer,
-            @RequestParam String id
+    public String addWordQuestion(@RequestParam String textQuestion,
+                                  @RequestParam String answer,
+                                  @RequestParam String id
     ){
         Question question = new Question(textQuestion, Type.WORD,testRepository.findById(Integer.parseInt(id)));
         questionRepository.save(question);

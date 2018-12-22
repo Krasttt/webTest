@@ -14,6 +14,8 @@ public class Answer {
     @ManyToOne
     private Question question;
 
+    public Answer() {
+    }
     public Answer(String text, boolean correct, Question question) {
         this.text = text;
         this.correct = correct;
@@ -50,8 +52,5 @@ public class Answer {
 
     public void setQuestion(Question question) {
         this.question = question;
-    }
-
-    public Answer() {
     }
 }

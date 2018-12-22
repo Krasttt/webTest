@@ -16,16 +16,28 @@ public class UserAnswer {
     private Question question;
 
     @ManyToOne
+    private UserAccount userAccount;
+
+    public UserAccount getUserAccount() {
+        return userAccount;
+    }
+
+    public void setUserAccount(UserAccount userAccount) {
+        this.userAccount = userAccount;
+    }
+
+    @ManyToOne
     private Result result;
 
     public UserAnswer() {
     }
 
-    public UserAnswer(String text, boolean correct, Question question, Result result) {
+    public UserAnswer(String text, boolean correct, Question question, Result result,UserAccount user) {
         this.text = text;
         this.correct = correct;
         this.question = question;
         this.result = result;
+        this.userAccount=user;
     }
 
     public Result getResult() {

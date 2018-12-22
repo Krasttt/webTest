@@ -15,17 +15,29 @@
 <div class="container">
 
     <form method="post">
-        <div class="card mt-5">
+        <div class="card mt-5 ">
             <h2 class="card-header text-center ">Welcom to Tester<br>AUTHORIZATION</h2>
-            <div class="card-body ">
-                <div class=" form-inline justify-content-center mt-3 ">
+            <div class="card-body">
 
-                    <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">
+                <div class=" mt-3 ">
+                    <form action="/login" method="post">
+                        <div class="form-group row"><label class="col-2"> User Name : </label>
+                            <div>
+                                <input class="form-control" type="text" name="username" placeholder="Username..."/>
+                            </div>
+                        </div>
+                        <div class="form-group row"><label class="col-2"> Password: </label>
+                            <div>
+                                <input class="form-control" type="password" name="password" placeholder="Password..."/>
+                            </div>
+                        </div>
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                        <div><button type="submit" class="btn btn-primary">Sign in</button></div>
+                    </form>
                 </div>
             </div>
-
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
-                Submit
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" formaction="/registration">
+                Registration!
             </button>
         </div>
     </form>

@@ -1,8 +1,19 @@
 <#import "parts/common.ftl" as c>
+<#include "parts/security.ftl">
+
 <@c.page>
+
+    <h5><b>Time</b> <span id="min">00</span>:<span id="sec">00</span></h5>
+        <script>
+            var str = "${test.duration}";
+            var time = '';
+            for (var i = 0; i < str.length; i++) {
+                if (isFinite(str[i])) {
+                    time += str[i];
+                }
+            }
+        </script>
     <#list questions as question>
-
-
         <div class="card">
             <div class="card-header">
                 <h4>${question.text}</h4>
@@ -41,6 +52,11 @@
                                      answers.push(answers${question.id}[i]);
                                  }
                              }
+                             var token = $("meta[name='_csrf']").attr("content");
+                             var header = $("meta[name='_csrf_header']").attr("content");
+                             $(document).ajaxSend(function (e, xhr, options) {
+                                 xhr.setRequestHeader(header, token);
+                             });
                              $.ajax({
                                  type: "POST",
                                  contentType: "application/json",
@@ -91,6 +107,11 @@
                                     answers.push(answers${question.id}[i]);
                                 }
                             }
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            $(document).ajaxSend(function (e, xhr, options) {
+                                xhr.setRequestHeader(header, token);
+                            });
                             $.ajax({
                                 type: "POST",
                                 contentType: "application/json",
@@ -121,7 +142,7 @@
                         <script>
                             var answer = {
                                 id:${answer.id},
-                                text: "${answer.text}"
+                                text: ''
                             };
                             answers${question.id}.push(answer)
                         </script>
@@ -130,11 +151,19 @@
                 <script>
                     $(document).ready(function () {
                         $("#btn${question.id}").click(function () {
+                            for (var i = 0; i < answers${question.id}.length; i++) {
+                                answers${question.id}[i].text = $("#textArea${question.id}").val();
+                            }
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            $(document).ajaxSend(function (e, xhr, options) {
+                                xhr.setRequestHeader(header, token);
+                            });
                             $.ajax({
                                 type: "POST",
                                 contentType: "application/json",
                                 url: "/test/addAnswer/${question.id}/${result.id}",
-                                data: JSON.stringify(answers${question.id}),
+                                data:JSON.stringify(answers${question.id}),
                                 dataType: "json",
                                 complete: function () {
                                     $('input[name=textArea${question.id}]').attr("disabled", true);
@@ -150,6 +179,50 @@
         </div>
     <br>
     </#list>
+    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
     <a href="/testResult/${test.id}/${result.id}" class="btn btn-success ">Complite</a>
+
+    <script>
+        var id = setInterval("timer()", 1000);
+        var secCounter = 0;
+        var minCounter = 0;
+
+        function timer() {
+
+            if (secCounter < 59) {
+                secCounter++;
+                if (secCounter < 10) {
+                    document.getElementById("sec").innerHTML = "0" + secCounter;
+                }
+                else {
+                    document.getElementById("sec").innerHTML = secCounter;
+
+                }
+
+            }
+            else {
+                secCounter = 0;
+                minCounter++;
+                if (minCounter < 10) {
+                    document.getElementById("min").innerHTML = "0" + minCounter;
+                }
+                else {
+                    document.getElementById("min").innerHTML = minCounter;
+
+                }
+                if (secCounter < 10) {
+                    document.getElementById("sec").innerHTML = "0" + secCounter;
+                }
+                else {
+                    document.getElementById("sec").innerHTML = secCounter;
+
+                }
+                document.getElementById("min").innerHTML = minCounter;
+            }
+            if (minCounter >= time) {
+                window.location.href = "/testResult/${test.id}/${result.id}";
+            }
+        }
+    </script>
 </@c.page>
 

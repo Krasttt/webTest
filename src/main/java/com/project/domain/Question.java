@@ -16,9 +16,6 @@ public class Question {
     @ManyToOne()
     private Test test;
 
-    @ManyToOne
-    private Result result;
-
     public Question(String text, Type type, Test test) {
         this.text = text;
         this.type = type;
@@ -36,15 +33,6 @@ public class Question {
     public void setTest(Test test) {
         this.test = test;
     }
-
-    public Result getResult() {
-        return result;
-    }
-
-    public void setResult(Result result) {
-        this.result = result;
-    }
-
     public void setType(Type type) {
         this.type = type;
     }

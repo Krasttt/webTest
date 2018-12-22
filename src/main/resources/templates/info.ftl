@@ -4,8 +4,10 @@
 <br><br>
 <form method="post">
     <div class="card">
-        <h3 class="card-header">№${test.id}. "${test.name}" <a href="/editTest?id=${test.id}" class="btn btn-success float-right">Edit</a></h3>
-        <button class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit" formaction="/addquestion?id=${test.id}">
+        <h3 class="card-header">№${test.id}. "${test.name}" <a href="/editTest?id=${test.id}"
+                                                               class="btn btn-success float-right">Edit</a></h3>
+        <button class="btn btn-outline-success my-2 my-sm-0 float-right" type="submit"
+                formaction="/addquestion?id=${test.id}">
             Add question
         </button>
         <div class="card-body">
@@ -17,6 +19,7 @@
             Start test!
         </button>
     </div>
+    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
 </form>
 
 </@c.page>
