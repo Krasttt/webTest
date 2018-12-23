@@ -7,8 +7,8 @@
     <thead class="thead-dark">
     <tr>
         <th>#</th>
-        <th scope="col" class="col-md-8">Название</th>
-        <th scope="col" class="col-md-2">Количество вопросов</th>
+        <th scope="col" class="col-md-7">Name</th>
+        <th scope="col" class="col-md-3">Amount of questions</th>
     </tr>
     </thead>
 

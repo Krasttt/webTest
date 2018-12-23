@@ -66,7 +66,6 @@
                                  complete: function () {
                                      $('input[name=radioBtn${question.id}]').attr("disabled", true);
                                      $("#btn${question.id}").attr("disabled", true);
-                                     alert("Success")
                                  }
                              });
                          });
@@ -121,7 +120,6 @@
                                 complete: function () {
                                     $('input[name=check${question.id}]').attr("disabled", true);
                                     $("#btn${question.id}").attr("disabled", true);
-                                    alert("SUCCESS")
                                 }
                             });
                         });
@@ -168,7 +166,6 @@
                                 complete: function () {
                                     $('input[name=textArea${question.id}]').attr("disabled", true);
                                     $("#btn${question.id}").attr("disabled", true);
-                                    alert("SUCCESS")
                                 }
                             });
                         });
