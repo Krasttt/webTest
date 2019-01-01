@@ -13,12 +13,9 @@
 </head>
 <body>
 <div class="container">
-
-    <form method="post">
         <div class="card mt-5 ">
             <h2 class="card-header text-center ">Welcom to Tester<br>AUTHORIZATION</h2>
             <div class="card-body">
-
                 <div class=" mt-3 ">
                     <form action="/login" method="post">
                         <div class="form-group row"><label class="col-2"> User Name : </label>
@@ -35,12 +32,15 @@
                         <div><button type="submit" class="btn btn-primary">Sign in</button></div>
                     </form>
                 </div>
+                <form>
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" formaction="/registration">
+                        Registration!
+                    </button>
+                </form>
             </div>
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" formaction="/registration">
-                Registration!
-            </button>
+
+
         </div>
-    </form>
 </div>
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

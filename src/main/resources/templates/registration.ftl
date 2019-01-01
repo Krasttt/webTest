@@ -19,28 +19,37 @@
             <h2 class="card-header text-center ">Welcom to Tester<br>REGISTRATION</h2>
             <div class="card-body ">
                 <div class=" mt-3 ">
-                    <form action="/login" method="post">
+                    <form action="/registration" method="post">
                         <div class="form-group row"><label class="col-2"> User Name : </label>
                             <div>
-                                <input class="form-control" type="text" name="username"
-                                       placeholder="Username..."/ required>
+                                <input class="form-control"  type="text" name="username"
+                                       placeholder="Username..." <#if user?has_content> value="${user.username?if_exists}" </#if> required/>
                             </div>
+                            <#if userError?has_content><h3 class="text-danger">${userError}</h3></#if>
                         </div>
                         <div class="form-group row"><label class="col-2"> Password: </label>
                             <div>
                                 <input class="form-control" type="password" name="password"
-                                       placeholder="Password..."/ required>
+                                       placeholder="Password..." required/ >
+                            </div>
+                           <#if confirmError?has_content><h3 class="text-danger">${confirmError}</h3></#if>
+                        </div>
+                        <div class="form-group row"><label class="col-2"> Confirm password: </label>
+                            <div>
+                                <input class="form-control" type="password" name="confirmPassword"
+                                       placeholder="Confirm password..." required/>
                             </div>
                         </div>
                         <div class="form-group row"><label class="col-2"> First Name : </label>
                             <div>
                                 <input class="form-control" type="text" name="firstName"
-                                       placeholder="First name..."/ required>
+                                       placeholder="First name..." <#if user?has_content> value="${user.firstName?if_exists}" </#if>required/>
                             </div>
                         </div>
                         <div class="form-group row"><label class="col-2"> Surname : </label>
                             <div>
-                                <input class="form-control" type="text" name="surName" placeholder="Surname..."/>
+                                <input class="form-control" type="text" name="surName" placeholder="Surname..."
+                                <#if user?has_content> value="${user.surName?if_exists}" </#if>/>
                             </div>
                         </div>
                         <input type="hidden" name="_csrf" value="${_csrf.token}"/>

@@ -8,35 +8,36 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+@PreAuthorize("hasAuthority('admin')")
 @Controller
-@RequestMapping("/user")
-public class UserController {
+public class AdminController {
     @Autowired
     private UserService userService;
-    @GetMapping
-    public String showProfile(@AuthenticationPrincipal UserAccount user, Model model){
+    @GetMapping("user/{id}")
+    public String showProfile(@PathVariable Integer id, Model model){
 
+        UserAccount user = userService.getUser(id);
         List<Result> results = userService.getResults(user);
 
         model.addAttribute("results",results);
         model.addAttribute("user",user);
         return "profile";
     }
-
-    @PostMapping("/edit")
-    public String userEdit(@AuthenticationPrincipal UserAccount user,@RequestParam String firstName,
-                           @RequestParam String surName){
-        userService.editUser(firstName, surName, user);
-        return "redirect:/user";
+    @GetMapping("/usersList")
+    public String showUsers(Model model){
+        List<UserAccount> users = userService.getAllUsers();
+        model.addAttribute("users",users);
+        return "usersList";
     }
 
-
-
+    @RequestMapping("/setAdmin/{id}")
+    public String setAdmin(@PathVariable Integer id){
+        userService.setAdmin(id);
+        return "redirect:/usersList";
+    }
 }

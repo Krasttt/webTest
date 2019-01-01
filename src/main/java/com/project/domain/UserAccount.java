@@ -4,7 +4,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,8 +44,8 @@ public class UserAccount implements UserDetails {
         this.active = active;
     }
     
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        return role.getType();
     }
     public void setRole(Role role) {
         this.role = role;
@@ -74,7 +73,7 @@ public class UserAccount implements UserDetails {
     }
 
     public boolean isAdmin(){
-        return getRole().getType().equals("admin");
+        return role.getType().equals("admin");
 
     }
     @Override
@@ -104,7 +103,7 @@ public class UserAccount implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
-        roles.add(getRole());
+        roles.add(role);
         return roles;
     }
 }

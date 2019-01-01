@@ -3,6 +3,7 @@ package com.project.Sevices;
 import com.project.domain.Result;
 import com.project.domain.UserAccount;
 import com.project.repositories.ResultRepository;
+import com.project.repositories.RoleRepository;
 import com.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,8 @@ public class UserService implements UserDetailsService {
     private  UserRepository userRepository;
     @Autowired
     private ResultRepository resultRepository;
-
+    @Autowired
+    private RoleRepository roleRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
@@ -36,5 +38,19 @@ public class UserService implements UserDetailsService {
 
     public List<Result> getResults(UserAccount user) {
         return resultRepository.findByUserId(user.getId());
+    }
+
+    public List<UserAccount> getAllUsers() {
+        return userRepository.findAllBy();
+    }
+
+    public UserAccount getUser(Integer id) {
+        return userRepository.findById(id);
+    }
+
+    public void setAdmin(Integer id) {
+        UserAccount user =userRepository.findById(id);
+        user.setRole(roleRepository.findByType("admin"));
+        userRepository.save(user);
     }
 }

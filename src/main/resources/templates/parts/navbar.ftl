@@ -1,3 +1,4 @@
+<#include "security.ftl">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="/tests">TESTer</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -12,6 +13,11 @@
             <li class="nav-item">
                 <a class="nav-link" href="/tests">Tests </a>
             </li>
+            <#if isAdmin>
+            <li class="nav-item">
+                <a class="nav-link" href="/usersList">UsersList</a>
+            </li>
+            </#if>
         </ul>
         <form method="get" action="/tests" class="form-inline">
             <input class="form-control mr-sm-2" type="text" name="filter" value="${filter?ifExists}"

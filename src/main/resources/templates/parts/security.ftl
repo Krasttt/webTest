@@ -4,12 +4,14 @@ known = Session.SPRING_SECURITY_CONTEXT??
 
 <#if known>
     <#assign
-    user = Session.SPRING_SECURITY_CONTEXT.authentication.principal
-    username = user.getUsername()
-    isAdmin = user.isAdmin()
+    activeUser = Session.SPRING_SECURITY_CONTEXT.authentication.principal
+    username = activeUser.getUsername()
+    isAdmin = activeUser.isAdmin()
+    userId = activeUser.getId()
     >
 <#else>
     <#assign
+    userId = 0
     name = "unknown"
     isAdmin = false
     >
