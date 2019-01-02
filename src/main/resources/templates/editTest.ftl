@@ -3,8 +3,42 @@
     <#list questions as question>
         <div class="card">
             <div class="card-header">
-                <h4>${question.text}</h4>
+                <div class="form-inline">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <h4>Question : </h4>
+                    <#--<input type="text" class="form-control" id="textArea${question.id}"-->
+                           <#--placeholder="${question.text}">-->
+                    <textarea class="form-control col-7 " rows="2" id="textArea${question.id}"></textarea>
+                    <button type="button" class="btn btn-primary ml-2" id="btnQuest${question.id}">Edit</button>
+                    <script>
+                        $("#textArea${question.id}")[0].placeholder =  "${question.text}";
+                    </script>
+                </div>
             </div>
+            <script>
+                $(document).ready(function () {
+                    $("#btnQuest${question.id}").click(function () {
+                        var data = $("#textArea${question.id}").val();
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+                        $(document).ajaxSend(function (e, xhr, options) {
+                            xhr.setRequestHeader(header, token);
+                        });
+                        $.ajax({
+                            type:"POST",
+                            contentType:"application/json",
+                            url:"/editTest/question/${question.id}",
+                            data: data,
+                            dataType:"json",
+                            complete : function(data){
+                                $("#textArea${question.id}").val('');
+                                $("#textArea${question.id}")[0].placeholder =  data.responseText;
+                                alert("SUCCESS");
+                            }
+                        });
+                    });
+                });
+            </script>
             <div class="card-body">
                 <h5 class="card-title"></h5>
                 <p class="card-text">${question.type}</p>
@@ -55,7 +89,7 @@
                             $.ajax({
                                 type:"POST",
                                 contentType:"application/json",
-                                url:"/editTest/${question.id}",
+                                url:"/editTest/answers/${question.id}",
                                 data:JSON.stringify(answers${question.id}),
                                 dataType:"json",
                                 success: function(data){
@@ -116,7 +150,7 @@
                                 $.ajax({
                                     type:"POST",
                                     contentType:"application/json",
-                                    url:"/editTest/${question.id}",
+                                    url:"/editTest/answers/${question.id}",
                                     data:JSON.stringify(answers${question.id}),
                                     dataType:"json",
                                     success: function(data){
@@ -169,7 +203,7 @@
                              $.ajax({
                                  type:"POST",
                                  contentType:"application/json",
-                                 url:"/editTest/${question.id}",
+                                 url:"/editTest/answers/${question.id}",
                                  data: JSON.stringify(answers${question.id}),
                                  dataType:"json",
                                  success: function(data){

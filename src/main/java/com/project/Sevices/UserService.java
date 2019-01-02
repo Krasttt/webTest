@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +22,15 @@ public class UserService implements UserDetailsService {
     private ResultRepository resultRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username);
     }
 
-    public void editUser(String firstName, String surName, UserAccount user) {
+    public void editUserInfo(String firstName, String surName, UserAccount user) {
         if (!firstName.equals("")) {
             user.setFirstName(firstName);
         }
@@ -52,5 +56,14 @@ public class UserService implements UserDetailsService {
         UserAccount user =userRepository.findById(id);
         user.setRole(roleRepository.findByType("admin"));
         userRepository.save(user);
+    }
+
+    public boolean editUserPassword(String curPassword, String newPassword, String repPassword, UserAccount user) {
+        if(passwordEncoder.matches(curPassword, user.getPassword())&&newPassword.equals(repPassword)){
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

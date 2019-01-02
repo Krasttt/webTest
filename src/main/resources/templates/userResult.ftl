@@ -9,6 +9,27 @@
             <h5> Grade : ${result.grade}<br><br></h5>
         </div>
     </div>
-</form>
 
+    <table class="mt-3 table table-bordered table-hover">
+
+        <thead class="thead-dark">
+        <tr>
+            <th>№</th>
+            <th scope="col" class="col-md-7">Question text</th>
+            <th scope="col" class="col-md-3">Correctly</th>
+        </tr>
+        </thead>
+
+        <tbody>
+    <#list questions as question>
+
+    <tr>
+        <th scope="row"></th>
+        <td>${question.text}</td>
+        <td>right</td>
+    </tr>
+    </#list>
+        </tbody>
+    </table>
+</form>
 </@c.page>

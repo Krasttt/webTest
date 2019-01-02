@@ -17,7 +17,7 @@ public class EditTestService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public List<Answer> editQuestion(Integer id, List<Answer> answers) {
+    public List<Answer> editQuestionAnswers(Integer id, List<Answer> answers) {
         for (Answer answer : answers) {
             if (answer.getText().equals("")) {
                 answer.setText(answerRepository.findById(answer.getId()).getText());
@@ -39,5 +39,11 @@ public class EditTestService {
 
     public List<Question> getQuestions(Integer id) {
         return questionRepository.findByTestId(id);
+    }
+
+    public void editQuestionText(Integer id, String questionText) {
+        Question question = questionRepository.findById(id);
+        question.setText(questionText);
+        questionRepository.save(question);
     }
 }

@@ -30,13 +30,19 @@ public class UserController {
         return "profile";
     }
 
-    @PostMapping("/edit")
-    public String userEdit(@AuthenticationPrincipal UserAccount user,@RequestParam String firstName,
+    @PostMapping("/editInfo")
+    public String userEditInfo(@AuthenticationPrincipal UserAccount user,@RequestParam String firstName,
                            @RequestParam String surName){
-        userService.editUser(firstName, surName, user);
+        userService.editUserInfo(firstName, surName, user);
         return "redirect:/user";
     }
 
+    @PostMapping("/editPassword")
+    public String userEditPassword(@AuthenticationPrincipal UserAccount user,@RequestParam String curPassword,
+                           @RequestParam String newPassword,@RequestParam String repPassword,Model model){
+        userService.editUserPassword(curPassword, newPassword,repPassword, user);
+        return "redirect:/user";
+    }
 
 
 }

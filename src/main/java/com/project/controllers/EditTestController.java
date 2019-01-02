@@ -30,11 +30,17 @@ public class EditTestController {
         return "editTest";
     }
 
-    @PostMapping("/editTest/{id}")
+    @PostMapping("/editTest/answers/{id}")
     @ResponseBody
-    public List<Answer> editQuestion(@PathVariable Integer id, @RequestBody List<Answer> answers) {
-        editTestService.editQuestion(id, answers);
+    public List<Answer> editQuestionAnswers(@PathVariable Integer id, @RequestBody List<Answer> answers) {
+        editTestService.editQuestionAnswers(id, answers);
         return answers;
+    }
+    @PostMapping("/editTest/question/{id}")
+    @ResponseBody
+    public String editQuestionText  (@PathVariable Integer id, @RequestBody String questionText) {
+        editTestService.editQuestionText(id,questionText);
+        return questionText;
     }
 }
 

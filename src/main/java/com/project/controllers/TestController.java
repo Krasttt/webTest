@@ -58,6 +58,8 @@ public class TestController {
     @RequestMapping("/testResult/{result_id}")
     public String showUserResult(@PathVariable("result_id") Integer resultId,Model model){
         Result result = testService.getResult(resultId);
+        List<Question> questions = testService.getQuestions(result.getTest().getId());
+        model.addAttribute("questions",questions);
         model.addAttribute("result",result);
         return "userResult";
     }
