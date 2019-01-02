@@ -11,7 +11,7 @@ public class UserAnswer {
     private String text;
     private boolean correct;
     @ManyToOne
-    private Question question;
+    private ResultQuestion resultQuestion;
     @ManyToOne
     private UserAccount userAccount;
     @ManyToOne
@@ -20,10 +20,10 @@ public class UserAnswer {
     public UserAnswer() {
     }
 
-    public UserAnswer(String text, boolean correct, Question question, Result result,UserAccount user) {
+    public UserAnswer(String text, boolean correct, ResultQuestion resultQuestion, Result result,UserAccount user) {
         this.text = text;
         this.correct = correct;
-        this.question = question;
+        this.resultQuestion = resultQuestion;
         this.result = result;
         this.userAccount=user;
     }
@@ -64,11 +64,11 @@ public class UserAnswer {
         this.correct = correct;
     }
 
-    public Question getQuestion() {
-        return question;
+    public ResultQuestion getQuestion() {
+        return resultQuestion;
     }
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setQuestion(ResultQuestion question) {
+        this.resultQuestion = question;
     }
 
 }

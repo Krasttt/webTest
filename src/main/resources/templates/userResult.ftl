@@ -26,7 +26,7 @@
     <tr>
         <th scope="row"></th>
         <td>${question.text}</td>
-        <td>right</td>
+        <td>${question.correctness?c}</td>
     </tr>
     </#list>
         </tbody>

@@ -8,5 +8,5 @@ import java.util.List;
 public interface UserAnswerRepository extends CrudRepository<UserAnswer, Long> {
     UserAnswer findById(Integer id);
 
-    List<UserAnswer> findByQuestionIdAndResultId(Integer questionId, Integer resultId);
+    List<UserAnswer> findByResultQuestionIdAndResultId(Integer questionId, Integer resultId);
 }
