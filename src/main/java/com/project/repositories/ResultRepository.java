@@ -10,5 +10,7 @@ import java.util.List;
 public interface ResultRepository extends CrudRepository<Result, Long> {
     Result findById(Integer id);
     List<Result> findByUserId(Integer id);
+    Result findFirstByTestIdAndActive(Integer testId,boolean active);
+    List<Result> findByActive(boolean active);
 
 }

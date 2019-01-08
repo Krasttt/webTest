@@ -30,21 +30,21 @@
                     <div class="form-group row"><label class="col-4"> Current password : </label>
                         <div>
                             <input class="form-control" type="password" name="curPassword" id="curPassword"
-                                   placeholder="Current password..."/ >
+                                   placeholder="Current password..." required/ >
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         </div>
                     </div>
                     <div class="form-group row"><label class="col-4"> New password : </label>
                         <div>
                             <input class="form-control" type="password" name="newPassword" id="newPassword"
-                                   placeholder="New password..."/ >
+                                   placeholder="New password..."required/ >
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         </div>
                     </div>
                     <div class="form-group row"><label class="col-4"> Repeat password : </label>
                         <div>
                             <input class="form-control" type="password" name="repPassword" id="repPassword"
-                                   placeholder="Repeat password..."/ >
+                                   placeholder="Repeat password..."required/ >
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         </div>
                     </div>
@@ -55,10 +55,12 @@
                 </form>
             </div>
         <#else>
+        <div>
             <div><h4>First Name : ${user.firstName}</h4></div>
             <div><h4>Surname : ${user.surName}</h4></div>
             <div><h4>Role : ${user.role}</h4></div>
             <div><a href="/setAdmin/${user.id}" class="btn btn-warning">SetAdmin</a></div>
+        </div>
         </#if>
 
     </div>

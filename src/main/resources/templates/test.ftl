@@ -12,6 +12,7 @@
                     time += str[i];
                 }
             }
+            document.getElementById("min").innerHTML = time;
         </script>
     <#list questions as question>
         <div class="card">
@@ -182,12 +183,12 @@
     <script>
         var id = setInterval("timer()", 1000);
         var secCounter = 0;
-        var minCounter = 0;
+        var minCounter = time;
 
         function timer() {
 
-            if (secCounter < 59) {
-                secCounter++;
+            if (secCounter > 0) {
+                secCounter--;
                 if (secCounter < 10) {
                     document.getElementById("sec").innerHTML = "0" + secCounter;
                 }
@@ -198,8 +199,8 @@
 
             }
             else {
-                secCounter = 0;
-                minCounter++;
+                secCounter = 59;
+                minCounter--;
                 if (minCounter < 10) {
                     document.getElementById("min").innerHTML = "0" + minCounter;
                 }
@@ -216,7 +217,7 @@
                 }
                 document.getElementById("min").innerHTML = minCounter;
             }
-            if (minCounter >= time) {
+            if (minCounter < 0 && secCounter<0) {
                 window.location.href = "/testResult/${test.id}/${result.id}";
             }
         }

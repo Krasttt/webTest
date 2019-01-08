@@ -25,8 +25,9 @@ public class TestService {
 
 
     public Result createResult(Integer id, UserAccount user) {
-        return resultRepository.save(new Result(new Date(), testRepository.findById(id).getName(),
-                testRepository.findById(id), user, 2));
+        Result result = new Result(new Date(), testRepository.findById(id).getName(),
+                testRepository.findById(id), user, 2,true);
+        return resultRepository.save(result);
     }
 
     public Test getTest(Integer id) {
@@ -105,18 +106,19 @@ public class TestService {
     public Map<String, Integer> setResult(Integer testId, Integer resultId) {
         Map<String, Integer> map = new HashMap<>();
         List<ResultQuestion> questions =resultQuestionRepository.findByResultId(resultId);
-        int countRightAnswers=0;
-        int amountQuestions = questionRepository.findByTestId(testId).size();
+        Double countRightAnswers=0.0;
+        Integer amountQuestions = questionRepository.findByTestId(testId).size();
         for (ResultQuestion question:questions) {
             if (question.isCorrectness()){
                 countRightAnswers++;
             }
         }
-        map.put("countRightAnswers", countRightAnswers);
+        map.put("countRightAnswers", countRightAnswers.intValue());
         map.put("amountQuestions", amountQuestions);
 
         Result result = resultRepository.findById(resultId);
         result.setGrade(countRightAnswers / amountQuestions);
+        result.setActive(false);
         result.setDuration(Duration.ofSeconds(new Date().getSeconds() - result.getStartTest().getSeconds()));
         resultRepository.save(result);
         return map;
@@ -129,5 +131,14 @@ public class TestService {
     public List<ResultQuestion> getResultQuestions(Integer resultId) {
 
         return resultQuestionRepository.findByResultId(resultId);
+    }
+
+    public Result getActiveResult(Integer testId) {
+        Result result = resultRepository.findFirstByTestIdAndActive(testId,true);
+        return result;
+    }
+
+    public List<Result> getAllActiveResult(boolean active) {
+        return resultRepository.findByActive(active);
     }
 }

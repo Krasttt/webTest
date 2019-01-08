@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +23,26 @@ public class TestController {
         List<Question> questions = testService.getQuestions(id);
         List<Answer> answers = testService.getAnswers(questions);
 
-        model.addAttribute("result", testService.createResult(id, user));
+        Result result = testService.getActiveResult(id);
+        if (result==null){
+            model.addAttribute("result", testService.createResult(id, user));
+
+        }
+        else {
+            model.addAttribute("result", result);
+            List<ResultQuestion> resultQuestions = testService.getResultQuestions(result.getId());
+            List<Question> deleteCandidates = new ArrayList<>();
+            for (Question question:questions) {
+                for (ResultQuestion resultQuestion: resultQuestions) {
+                    if (question.equals(resultQuestion)){
+                        deleteCandidates.add(question);
+                    }
+                }
+            }
+            for (Question deleteCandidate:deleteCandidates) {
+               questions.remove(deleteCandidate);
+            }
+        }
         model.addAttribute("allAnswers", answers);
         model.addAttribute("questions", questions);
         model.addAttribute("test", testService.getTest(id));

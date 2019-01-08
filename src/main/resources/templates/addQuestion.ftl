@@ -3,7 +3,7 @@
 <br>
          <div class="card">
              <div class="card-header">
-                 <h2>Вопрос какого типа вы хотите добавить ?</h2>
+                 <h2>Type of question?</h2>
              </div>
              <div class="card-body row">
                  <div class="col-4">

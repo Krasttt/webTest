@@ -16,6 +16,21 @@ public class Question {
     public Question() {
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj==this){
+            return true;
+        }
+        if (obj == null || (obj.getClass() != ResultQuestion.class && obj.getClass() != this.getClass())) {
+            return false;
+        }
+        if (obj.getClass() == ResultQuestion.class){
+            ResultQuestion resultQuestion = (ResultQuestion)obj;
+            return resultQuestion.getText().equals(this.getText());
+        }
+        return false;
+    }
+
     public Question(String text, Type type, Test test) {
         this.text = text;
         this.type = type;

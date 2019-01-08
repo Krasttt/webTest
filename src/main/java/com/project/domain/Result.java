@@ -13,6 +13,16 @@ public class Result {
     private String name;
     private Duration duration;
     private Integer grade;
+    private boolean active;
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @ManyToOne
     private Test test;
     @ManyToOne
@@ -21,12 +31,13 @@ public class Result {
     public Result() {
     }
 
-    public Result(Date startTest, String name, Test test,UserAccount user,Integer grade) {
+    public Result(Date startTest, String name, Test test,UserAccount user,Integer grade,boolean active) {
         this.startTest = startTest;
         this.name = name;
         this.test = test;
         this.user = user;
         this.grade=grade;
+        this.active=active;
     }
 
     public UserAccount getUser() {
