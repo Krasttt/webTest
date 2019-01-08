@@ -48,7 +48,7 @@ public class MainController {
 
     @RequestMapping("/")
     public String index() {
-        return "index";
+        return "redirect:/tests";
     }
 
 

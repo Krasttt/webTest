@@ -22,22 +22,42 @@
                     <form action="/registration" method="post">
                         <div class="form-group row"><label class="col-2"> User Name : </label>
                             <div>
-                                <input class="form-control"  type="text" name="username"
-                                       placeholder="Username..." <#if user?has_content> value="${user.username?if_exists}" </#if> required/>
+                                <input class="form-control ${(usernameError??)?string('is-invalid', '')}
+                                           ${(userError??)?string('is-invalid', '')}" type="text"
+                                       name="username" placeholder="Username..."
+                                <#if user?has_content> value="${user.username?if_exists}" </#if> required/>
+                                <#if usernameError??>
+                                     <div class="invalid-feedback">
+                                        ${usernameError}
+                                      </div>
+                                </#if>
+                                <#if userError??>
+                                <div class="invalid-feedback">
+                                    ${userError}
+                                </div>
+                                </#if>
                             </div>
-                            <#if userError?has_content><h3 class="text-danger">${userError}</h3></#if>
                         </div>
                         <div class="form-group row"><label class="col-2"> Password: </label>
                             <div>
-                                <input class="form-control" type="password" name="password"
-                                       placeholder="Password..." required/ >
+                                <input class="form-control ${(passwordError??)?string('is-invalid', '')}"
+                                       type="password" name="password" placeholder="Password..." required/ >
+                            <#if passwordError??>
+                                <div class="invalid-feedback">
+                                    ${passwordError}
+                                </div>
+                            </#if>
                             </div>
-                           <#if confirmError?has_content><h3 class="text-danger">${confirmError}</h3></#if>
                         </div>
                         <div class="form-group row"><label class="col-2"> Confirm password: </label>
                             <div>
-                                <input class="form-control" type="password" name="confirmPassword"
-                                       placeholder="Confirm password..." required/>
+                                <input class="form-control ${(confirmError??)?string('is-invalid', '')}" type="password"
+                                       name="confirmPassword" placeholder="Confirm password..." required/>
+                                <#if confirmError??>
+                                <div class="invalid-feedback">
+                                    ${confirmError}
+                                </div>
+                                </#if>
                             </div>
                         </div>
                         <div class="form-group row"><label class="col-2"> First Name : </label>

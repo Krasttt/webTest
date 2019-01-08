@@ -17,6 +17,11 @@
             <h2 class="card-header text-center ">Welcom to Tester<br>AUTHORIZATION</h2>
             <div class="card-body">
                 <div class=" mt-3 ">
+                    <#if Session?? && Session.SPRING_SECURITY_LAST_EXCEPTION??>
+                        <div class="alert alert-danger" role="alert">
+                           ${Session.SPRING_SECURITY_LAST_EXCEPTION.message}
+                        </div>
+                    </#if>
                     <form action="/login" method="post">
                         <div class="form-group row"><label class="col-2"> User Name : </label>
                             <div>

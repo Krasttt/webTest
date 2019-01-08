@@ -26,7 +26,19 @@ public class CreateTestController {
     @PostMapping("/createtest")
     public String createTest(
             @RequestParam String name, @RequestParam String description,
-            @RequestParam Integer duration, @AuthenticationPrincipal UserAccount user) {
+            @RequestParam Integer duration, @AuthenticationPrincipal UserAccount user,Model model) {
+        if (name.length()<5){
+            model.addAttribute("nameError","Short name");
+        }
+        if (description.length() < 10){
+            model.addAttribute("descriptionError","Short description");
+        }
+        if (duration<10||duration>60){
+            model.addAttribute("durationError","Incorrect duration");
+        }
+        if (!model.asMap().isEmpty()){
+            return "createtest";
+        }
         createTestService.addTest(name, description, duration, user);
         return "redirect:/tests";
     }
@@ -51,7 +63,17 @@ public class CreateTestController {
                                    @RequestParam(value ="check3",required = false,defaultValue = "false") String check3,
                                    @RequestParam(value ="check4",required = false,defaultValue = "false") String check4,
                                    @RequestParam String answer1, @RequestParam String answer2,
-                                   @RequestParam String answer3, @RequestParam String answer4) {
+                                   @RequestParam String answer3, @RequestParam String answer4,Model model) {
+
+        if (textQuestion.length()<5){
+            model.addAttribute("lengthError","Short question");
+            model.addAttribute("answer1",answer1);
+            model.addAttribute("answer2",answer2);
+            model.addAttribute("answer3",answer3);
+            model.addAttribute("answer4",answer4);
+            model.addAttribute("id",id);
+            return "addMultiQuestion";
+        }
 
         createTestService.addMultiQuestion(textQuestion, id, check1, check2, check3, check4, answer1, answer2, answer3, answer4);
         return "redirect:/tests";
@@ -65,7 +87,16 @@ public class CreateTestController {
     @PostMapping("/addSingleQuestion")
     public String addSingleQuestion(@RequestParam String textQuestion, @RequestParam String corAnswer,
                                     @RequestParam String answer2, @RequestParam String answer3,
-                                    @RequestParam String answer4, @RequestParam String id) {
+                                    @RequestParam String answer4, @RequestParam String id,Model model) {
+        if (textQuestion.length()<5){
+            model.addAttribute("lengthError","Short question");
+            model.addAttribute("corAnswer",corAnswer);
+            model.addAttribute("answer2",answer2);
+            model.addAttribute("answer3",answer3);
+            model.addAttribute("answer4",answer4);
+            model.addAttribute("id",id);
+            return "addSingleQuestion";
+        }
         createTestService.addSingleQuestion(textQuestion, corAnswer, answer2, answer3, answer4, id);
         return "redirect:/tests";
     }
@@ -77,7 +108,15 @@ public class CreateTestController {
     }
 
     @PostMapping("/addWordQuestion")
-    public String addWordQuestion(@RequestParam String textQuestion, @RequestParam String answer, @RequestParam String id) {
+    public String addWordQuestion(@RequestParam String textQuestion, @RequestParam String answer,
+                                  @RequestParam String id,Model model) {
+        if (textQuestion.length()<5){
+            model.addAttribute("lengthError","Short question");
+            model.addAttribute("answer",answer);
+            model.addAttribute("id",id);
+            return "addWordQuestion";
+        }
+
         createTestService.addWordQuestion(textQuestion, answer, id);
         return "redirect:/tests";}
 }

@@ -1,14 +1,19 @@
 package com.project.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 
 @Entity
 public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull
     private String text;
+    @NotNull
     private boolean correct;
+    @NotNull
     @ManyToOne
     private Question question;
 

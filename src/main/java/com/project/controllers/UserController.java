@@ -32,7 +32,20 @@ public class UserController {
 
     @PostMapping("/editInfo")
     public String userEditInfo(@AuthenticationPrincipal UserAccount user,@RequestParam String firstName,
-                           @RequestParam String surName){
+                           @RequestParam String surName,Model model){
+        if(!firstName.isEmpty()&&firstName.length()<3){
+            model.addAttribute("firstNameError","Min 3 letters");
+        }
+        if (!surName.isEmpty()&&surName.length()<3){
+            model.addAttribute("surNameError","Min 3 letters");
+        }
+        if (!model.asMap().isEmpty()){
+
+            List<Result> results = userService.getResults(user);
+            model.addAttribute("results",results);
+            model.addAttribute("user",user);
+            return "profile";
+        }
         userService.editUserInfo(firstName, surName, user);
         return "redirect:/user";
     }
@@ -40,7 +53,14 @@ public class UserController {
     @PostMapping("/editPassword")
     public String userEditPassword(@AuthenticationPrincipal UserAccount user,@RequestParam String curPassword,
                            @RequestParam String newPassword,@RequestParam String repPassword,Model model){
-        userService.editUserPassword(curPassword, newPassword,repPassword, user);
+
+       if (!userService.editUserPassword(curPassword, newPassword,repPassword, user)){
+           model.addAttribute("passwordError","Error.Try again...");
+           List<Result> results = userService.getResults(user);
+           model.addAttribute("results",results);
+           model.addAttribute("user",user);
+           return "profile";
+       }
         return "redirect:/user";
     }
 

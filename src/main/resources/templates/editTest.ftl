@@ -6,9 +6,7 @@
                 <div class="form-inline">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <h4>Question : </h4>
-                    <#--<input type="text" class="form-control" id="textArea${question.id}"-->
-                           <#--placeholder="${question.text}">-->
-                    <textarea class="form-control col-7 " rows="2" id="textArea${question.id}"></textarea>
+                    <textarea class="form-control col-7 " minlength="5" maxlength="255" rows="2" id="textArea${question.id}"></textarea>
                     <button type="button" class="btn btn-primary ml-2" id="btnQuest${question.id}">Edit</button>
                     <script>
                         $("#textArea${question.id}")[0].placeholder =  "${question.text}";

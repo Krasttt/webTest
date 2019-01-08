@@ -1,12 +1,15 @@
 package com.project.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull
     private String text;
     @Enumerated(EnumType.STRING)
     private Type type;

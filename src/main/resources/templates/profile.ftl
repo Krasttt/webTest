@@ -9,15 +9,27 @@
                 <form method="post" action="/user/editInfo">
                     <div class="form-group row"><label class="col-4"> First Name : </label>
                         <div>
-                    <input class="form-control" type="text" name="firstName" id="firsName"
-                           placeholder="First name..."/ >
+                            <input class="form-control ${(firstNameError??)?string('is-invalid', '')}"
+                                   minlength="3" type="text" name="firstName" id="firsName"
+                                   placeholder="First name..."/ >
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                            <#if firstNameError??>
+                                 <div class="invalid-feedback">
+                                     ${firstNameError}
+                                 </div>
+                            </#if>
                 </div>
             </div>
                     <div class="form-group row"><label class="col-4"> Surname : </label>
                 <div>
-                    <input class="form-control" type="text" name="surName" id="surName" placeholder="Surname..."/>
+                    <input class="form-control ${(surNameError??)?string('is-invalid', '')}" minlength="3"
+                           type="text" name="surName" id="surName" placeholder="Surname..."/>
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                    <#if surNameError??>
+                                 <div class="invalid-feedback">
+                                     ${surNameError}
+                                 </div>
+                    </#if>
                 </div>
             </div>
             <button id="editBtn" class="btn btn-outline-success my-2 my-sm-0" type="submit">
@@ -27,31 +39,45 @@
             </div>
             <div class="col-6">
                 <form method="post" action="/user/editPassword">
+
                     <div class="form-group row"><label class="col-4"> Current password : </label>
                         <div>
-                            <input class="form-control" type="password" name="curPassword" id="curPassword"
+                            <input class="form-control ${(passwordError??)?string('is-invalid', '')}"
+                                   minlength="6" type="password" name="curPassword"
+                                   id="curPassword"
                                    placeholder="Current password..." required/ >
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
+                            <#if passwordError??>
+                                 <div class="invalid-feedback">
+                                     ${passwordError}
+                                 </div>
+                            </#if>
                         </div>
                     </div>
                     <div class="form-group row"><label class="col-4"> New password : </label>
                         <div>
-                            <input class="form-control" type="password" name="newPassword" id="newPassword"
-                                   placeholder="New password..."required/ >
+                            <input class="form-control" minlength="6" type="password" name="newPassword"
+                                   id="newPassword"
+                                   placeholder="New password..." required/ >
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         </div>
                     </div>
                     <div class="form-group row"><label class="col-4"> Repeat password : </label>
                         <div>
-                            <input class="form-control" type="password" name="repPassword" id="repPassword"
-                                   placeholder="Repeat password..."required/ >
+                            <input class="form-control" minlength="6" type="password" name="repPassword"
+                                   id="repPassword"
+                                   placeholder="Repeat password..." required/ >
                             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                         </div>
                     </div>
-                    <button id="editPassword" class="btn btn-outline-success my-2 my-sm-0" type="submit">
+
+
+                    <div>
+                    <button id="editPassword" class="btn btn-outline-success my-2 my-sm-0 " type="submit">
                         Change password
                     </button>
-                    <#if error?has_content><h3 class="text-danger">${error}</h3></#if>
+
+                    </div>
                 </form>
             </div>
         <#else>

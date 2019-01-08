@@ -27,7 +27,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
+        UserAccount user =userRepository.findByUsername(username);
+        if (user==null){
+            throw new UsernameNotFoundException("User not found.");
+        }
+        return user;
     }
 
     public void editUserInfo(String firstName, String surName, UserAccount user) {
@@ -59,7 +63,7 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean editUserPassword(String curPassword, String newPassword, String repPassword, UserAccount user) {
-        if(passwordEncoder.matches(curPassword, user.getPassword())&&newPassword.equals(repPassword)){
+        if(passwordEncoder.matches(curPassword, user.getPassword())&&newPassword.equals(repPassword)&&newPassword.length()>6){
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);
             return true;

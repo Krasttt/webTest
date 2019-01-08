@@ -6,7 +6,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ">
+        <ul class="navbar-nav  mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/user">Profile</a>
             </li>
@@ -25,7 +25,7 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
         <form action="/logout" method="post">
-            <button class="btn btn-outline-success ml-5 my-2 my-sm-0 " type="submit">Sign Out</button>
+            <button class="btn btn-outline-success ml-3 my-2 my-sm-0 " type="submit">Sign Out</button>
             <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
     </div>
