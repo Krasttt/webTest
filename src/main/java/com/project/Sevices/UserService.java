@@ -56,10 +56,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findById(id);
     }
 
-    public void setAdmin(Integer id) {
+    public boolean setAdmin(Integer id) {
         UserAccount user =userRepository.findById(id);
-        user.setRole(roleRepository.findByType("admin"));
-        userRepository.save(user);
+        if (user==null){
+            return false;
+        }
+        else {
+            user.setRole(roleRepository.findByType("admin"));
+            userRepository.save(user);
+            return true;
+        }
     }
 
     public boolean editUserPassword(String curPassword, String newPassword, String repPassword, UserAccount user) {

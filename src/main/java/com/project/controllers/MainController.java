@@ -35,9 +35,6 @@ public class MainController {
 
         List<Result> activeResults = testService.getAllActiveResult(true);
         for (Result result: activeResults) {
-            System.out.println(new Date().getTime()-result.getStartTest().getTime());
-            System.out.println(result.getTest().getDuration());
-            System.out.println(result.getTest().getDuration().toMillis());
             if (new Date().getTime()-result.getStartTest().getTime()>=result.getTest().getDuration().toMillis()){
                 testService.setResult(result.getTest().getId(),result.getId());
             }
