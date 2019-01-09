@@ -6,18 +6,20 @@ import com.project.domain.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/editTest")
 public class EditTestController {
     @Autowired
     private EditTestService editTestService;
 
     @PreAuthorize("hasAuthority('admin')")
-    @GetMapping("/editTest")
+    @GetMapping()
     public String showEdit(
             Model model,
             @RequestParam Integer id
@@ -30,17 +32,24 @@ public class EditTestController {
         return "editTest";
     }
 
-    @PostMapping("/editTest/answers/{id}")
+    @PostMapping("/answers/{id}")
     @ResponseBody
     public List<Answer> editQuestionAnswers(@PathVariable Integer id, @RequestBody List<Answer> answers) {
         editTestService.editQuestionAnswers(id, answers);
         return answers;
     }
-    @PostMapping("/editTest/question/{id}")
+    @PostMapping("/question/{id}")
     @ResponseBody
     public String editQuestionText  (@PathVariable Integer id, @RequestBody String questionText) {
         editTestService.editQuestionText(id,questionText);
         return questionText;
+    }
+
+    @GetMapping("/delete/{testId}/{questionId}")
+    @Transactional
+    public String deleteQuestion(@PathVariable Integer testId,@PathVariable Integer questionId){
+        editTestService.deleteQuestion(testId,questionId);
+        return "redirect:/editTest?id="+testId;
     }
 }
 

@@ -8,6 +8,8 @@
                     <h4>Question : </h4>
                     <textarea class="form-control col-7 " minlength="5" maxlength="255" rows="2" id="textArea${question.id}"></textarea>
                     <button type="button" class="btn btn-primary ml-2" id="btnQuest${question.id}">Edit</button>
+                    <a href="/editTest/delete/${id}/${question.id}"
+                       class="btn btn-danger float-right ml-2">X</a>
                     <script>
                         $("#textArea${question.id}")[0].placeholder =  "${question.text}";
                     </script>

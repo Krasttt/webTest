@@ -7,10 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class CreateTestController {
@@ -107,6 +104,7 @@ public class CreateTestController {
         return "addWordQuestion";
     }
 
+
     @PostMapping("/addWordQuestion")
     public String addWordQuestion(@RequestParam String textQuestion, @RequestParam String answer,
                                   @RequestParam String id,Model model) {
@@ -118,5 +116,8 @@ public class CreateTestController {
         }
 
         createTestService.addWordQuestion(textQuestion, answer, id);
-        return "redirect:/tests";}
+        return "redirect:/tests";
+    }
+
+
 }
