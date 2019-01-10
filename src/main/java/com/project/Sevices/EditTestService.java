@@ -6,9 +6,7 @@ import com.project.domain.Test;
 import com.project.repositories.AnswerRepository;
 import com.project.repositories.QuestionRepository;
 import com.project.repositories.TestRepository;
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -48,6 +46,9 @@ public class EditTestService {
     }
 
     public void editQuestionText(Integer id, String questionText) {
+        if (questionText.equals("")) {
+            return;
+        }
         Question question = questionRepository.findById(id);
         question.setText(questionText);
         questionRepository.save(question);

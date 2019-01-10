@@ -10,6 +10,5 @@ import java.util.List;
 public interface QuestionRepository extends CrudRepository<Question, Long> {
     List<Question> findByTestId(Integer id);
     Question findById(Integer id);
-    void deleteById(Integer id);
 
 }

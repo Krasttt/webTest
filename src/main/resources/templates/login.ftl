@@ -14,7 +14,7 @@
 <body>
 <div class="container">
         <div class="card mt-5 ">
-            <h2 class="card-header text-center ">Welcom to Tester<br>AUTHORIZATION</h2>
+            <h2 class="card-header text-center ">Welcome to Tester<br>AUTHORIZATION</h2>
             <div class="card-body">
                 <div class=" mt-3 ">
                     <#if Session?? && Session.SPRING_SECURITY_LAST_EXCEPTION??>
@@ -34,14 +34,13 @@
                             </div>
                         </div>
                         <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-                        <div><button type="submit" class="btn btn-primary">Sign in</button></div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Sign in</button>
+                            <a href="/registration" class="btn btn-outline-success float-right">Registration!</a>
+                        </div>
                     </form>
                 </div>
-                <form>
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit" formaction="/registration">
-                        Registration!
-                    </button>
-                </form>
+
             </div>
 
 

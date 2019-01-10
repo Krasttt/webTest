@@ -96,8 +96,8 @@
                      </script>
                             </#if>
                         </#list>
-                    <button type="button" class="btn btn-primary ml-2" id="btn${question.id}">Confirm</button>
                 </div>
+                    <button type="button" class="btn btn-primary ml-2" id="btn${question.id}">Confirm</button>
                 <script>
                     $(document).ready(function () {
                         $("#btn${question.id}").click(function () {
@@ -178,7 +178,7 @@
     <br>
     </#list>
     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
-    <a href="/testResult/${test.id}/${result.id}" class="btn btn-success ">Complite</a>
+    <a href="/testResult/${test.id}/${result.id}" class="btn btn-success ">Complete</a>
 
     <script>
         var id = setInterval("timer()", 1000);

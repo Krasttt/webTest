@@ -6,36 +6,38 @@
                 <div class="form-inline">
                     <input type="hidden" name="_csrf" value="${_csrf.token}"/>
                     <h4>Question : </h4>
-                    <textarea class="form-control col-7 " minlength="5" maxlength="255" rows="2" id="textArea${question.id}"></textarea>
+                    <textarea class="form-control col-7 " minlength="5" maxlength="255" rows="2" id="textAreaQuest${question.id}"></textarea>
                     <button type="button" class="btn btn-primary ml-2" id="btnQuest${question.id}">Edit</button>
                     <a href="/editTest/delete/${id}/${question.id}"
                        class="btn btn-danger float-right ml-2">X</a>
                     <script>
-                        $("#textArea${question.id}")[0].placeholder =  "${question.text}";
+                        $("#textAreaQuest${question.id}")[0].placeholder =  "${question.text}";
                     </script>
                 </div>
             </div>
             <script>
                 $(document).ready(function () {
                     $("#btnQuest${question.id}").click(function () {
-                        var data = $("#textArea${question.id}").val();
-                        var token = $("meta[name='_csrf']").attr("content");
-                        var header = $("meta[name='_csrf_header']").attr("content");
-                        $(document).ajaxSend(function (e, xhr, options) {
-                            xhr.setRequestHeader(header, token);
-                        });
-                        $.ajax({
-                            type:"POST",
-                            contentType:"application/json",
-                            url:"/editTest/question/${question.id}",
-                            data: data,
-                            dataType:"json",
-                            complete : function(data){
-                                $("#textArea${question.id}").val('');
-                                $("#textArea${question.id}")[0].placeholder =  data.responseText;
-                                alert("SUCCESS");
-                            }
-                        });
+                        var data = $("#textAreaQuest${question.id}").val();
+                        if (data!==""){
+                            var token = $("meta[name='_csrf']").attr("content");
+                            var header = $("meta[name='_csrf_header']").attr("content");
+                            $(document).ajaxSend(function (e, xhr, options) {
+                                xhr.setRequestHeader(header, token);
+                            });
+                            $.ajax({
+                                type:"POST",
+                                contentType:"application/json",
+                                url:"/editTest/question/${question.id}",
+                                data: data,
+                                dataType:"json",
+                                complete : function(data){
+                                    $("#textAreaQuest${question.id}").val('');
+                                    $("#textAreaQuest${question.id}")[0].placeholder =  data.responseText;
+                                    alert("SUCCESS");
+                                }
+                            });
+                        }
                     });
                 });
             </script>
@@ -193,6 +195,7 @@
                          $("#btn${question.id}").click(function () {
                              for (var i = 0; i < answers${question.id}.length; i++) {
                                  answers${question.id}[i].text = $("#textArea${question.id}").val();
+                                 console.log(answers${question.id}[i]);
                                  $("#textArea${question.id}").val('');
                              }
                              var token = $("meta[name='_csrf']").attr("content");
