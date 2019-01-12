@@ -2,7 +2,6 @@ package com.project.controllers;
 
 import com.project.Sevices.TestService;
 import com.project.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +13,15 @@ import java.util.Map;
 
 @Controller
 public class TestController {
-    @Autowired
-    private TestService testService;
+
+    private static final String RESULT_ATTRIBUTE_NAME="result";
+    private static final String TEST_ATTRIBUTE_NAME="test";
+
+    private final TestService testService;
+
+    public TestController(TestService testService) {
+        this.testService = testService;
+    }
 
     @RequestMapping("/test")
     public String showTest(@RequestParam(defaultValue = "1") Integer id, Model model,
@@ -25,11 +31,11 @@ public class TestController {
 
         Result result = testService.getActiveResult(id);
         if (result==null){
-            model.addAttribute("result", testService.createResult(id, user));
+            model.addAttribute(RESULT_ATTRIBUTE_NAME, testService.createResult(id, user));
 
         }
         else {
-            model.addAttribute("result", result);
+            model.addAttribute(RESULT_ATTRIBUTE_NAME, result);
             List<ResultQuestion> resultQuestions = testService.getResultQuestions(result.getId());
             List<Question> deleteCandidates = new ArrayList<>();
             for (Question question:questions) {
@@ -45,8 +51,8 @@ public class TestController {
         }
         model.addAttribute("allAnswers", answers);
         model.addAttribute("questions", questions);
-        model.addAttribute("test", testService.getTest(id));
-        return "test";
+        model.addAttribute(TEST_ATTRIBUTE_NAME, testService.getTest(id));
+        return "test/test";
     }
 
     @PostMapping("/test/addAnswer/{id}/{result_id}")
@@ -60,8 +66,8 @@ public class TestController {
     public String showTestInfo(@RequestParam Integer id, Model model) {
         Test test = testService.getTest(id);
         model.addAttribute("duration", test.getDuration().toMinutes());
-        model.addAttribute("test", test);
-        return "info";
+        model.addAttribute(TEST_ATTRIBUTE_NAME, test);
+        return "test/info";
     }
     @RequestMapping("/testResult/{test_id}/{result_id}")
     public String showTestResult(@PathVariable("test_id") Integer testId, @PathVariable("result_id") Integer resultId,
@@ -70,17 +76,17 @@ public class TestController {
 
         model.addAttribute("countRightAnswers", map.get("countRightAnswers"));
         model.addAttribute("amountQuestions", map.get("amountQuestions"));
-        model.addAttribute("test", testService.getTest(testId));
-        model.addAttribute("result", testService.getResult(resultId));
+        model.addAttribute(TEST_ATTRIBUTE_NAME, testService.getTest(testId));
+        model.addAttribute(RESULT_ATTRIBUTE_NAME, testService.getResult(resultId));
 
-        return "testResult";
+        return "test/testResult";
     }
     @RequestMapping("/testResult/{result_id}")
     public String showUserResult(@PathVariable("result_id") Integer resultId,Model model){
         Result result = testService.getResult(resultId);
         List<ResultQuestion> questions = testService.getResultQuestions(result.getId());
         model.addAttribute("questions",questions);
-        model.addAttribute("result",result);
-        return "userResult";
+        model.addAttribute(RESULT_ATTRIBUTE_NAME,result);
+        return "user/userResult";
     }
 }

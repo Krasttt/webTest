@@ -6,7 +6,6 @@ import com.project.domain.Test;
 import com.project.repositories.AnswerRepository;
 import com.project.repositories.QuestionRepository;
 import com.project.repositories.TestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,12 +13,15 @@ import java.util.List;
 
 @Service
 public class EditTestService {
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private TestRepository testRepository;
+    private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
+    private final TestRepository testRepository;
+
+    public EditTestService(AnswerRepository answerRepository, QuestionRepository questionRepository, TestRepository testRepository) {
+        this.answerRepository = answerRepository;
+        this.questionRepository = questionRepository;
+        this.testRepository = testRepository;
+    }
 
     public List<Answer> editQuestionAnswers(Integer id, List<Answer> answers) {
         for (Answer answer : answers) {

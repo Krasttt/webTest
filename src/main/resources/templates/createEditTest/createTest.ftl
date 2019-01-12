@@ -1,4 +1,4 @@
-<#import "parts/common.ftl" as c>
+<#import "../parts/common.ftl" as c>
 <@c.page>
 <h1>Welcome to Tester, User</h1>
 <fieldset>

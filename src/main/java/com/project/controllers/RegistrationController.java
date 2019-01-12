@@ -3,7 +3,6 @@ package com.project.controllers;
 import com.project.Sevices.RegistrationService;
 import com.project.domain.UserAccount;
 import com.project.domain.UserRegistrationForm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,26 +15,31 @@ import java.util.Map;
 
 @Controller
 public class RegistrationController {
-    @Autowired
-    private RegistrationService registrationService;
+    private static final String USER_ATTRIBUTE_NAME="user";
+
+    private final RegistrationService registrationService;
+
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @GetMapping("/registration")
     public String registrationPage(){
-        return "registration";
+        return "auth/registration";
     }
     @PostMapping("/registration")
     public String addUser( @Valid UserRegistrationForm userAccount, BindingResult bindingResult,Model model){
 
         if (!userAccount.getPassword().equals(userAccount.getConfirmPassword())){
-            model.addAttribute("user",userAccount);
+            model.addAttribute(USER_ATTRIBUTE_NAME,userAccount);
             model.addAttribute("confirmError","Passwords don't match");
-            return "registration";
+            return "auth/registration";
         }
         if (bindingResult.hasErrors()){
             Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
             model.mergeAttributes(errors);
-            model.addAttribute("user",userAccount);
-            return "registration";
+            model.addAttribute(USER_ATTRIBUTE_NAME,userAccount);
+            return "auth/registration";
         }
         UserAccount user = new UserAccount();
         user.setUsername(userAccount.getUsername());
@@ -44,15 +48,15 @@ public class RegistrationController {
         user.setPassword(userAccount.getPassword());
 
         if (!registrationService.addUser(user)) {
-            model.addAttribute("user",userAccount);
+            model.addAttribute(USER_ATTRIBUTE_NAME,userAccount);
             model.addAttribute("userError","User already exist!");
-            return "registration";
+            return "auth/registration";
         }
         return "redirect:/login";
     }
 
     @RequestMapping("/authorization")
     public String authorizationPage(){
-        return "authorization";
+        return "auth/authorization";
     }
 }

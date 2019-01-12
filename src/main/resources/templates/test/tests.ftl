@@ -1,5 +1,5 @@
-<#import "parts/common.ftl" as c>
-<#include "parts/security.ftl">
+<#import "../parts/common.ftl" as c>
+<#include "../parts/security.ftl">
 <@c.page>
 <h1>Welcome to Tester, ${username}<#if isAdmin><a href="/createtest" class="btn btn-success mt-2 float-right">Create</a></#if></h1>
 <table class="table table-bordered table-hover">

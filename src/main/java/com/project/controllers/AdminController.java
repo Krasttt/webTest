@@ -3,7 +3,6 @@ package com.project.controllers;
 import com.project.Sevices.UserService;
 import com.project.domain.Result;
 import com.project.domain.UserAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +16,15 @@ import java.util.List;
 @PreAuthorize("hasAuthority('admin')")
 @Controller
 public class AdminController {
-    @Autowired
-    private UserService userService;
+
+    private static final String USER_ATTRIBUTE_NAME="user";
+
+    private final UserService userService;
+
+    public AdminController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping("user/{id}")
     public String showProfile(@PathVariable Integer id, Model model){
 
@@ -26,14 +32,14 @@ public class AdminController {
         List<Result> results = userService.getResults(user);
 
         model.addAttribute("results",results);
-        model.addAttribute("user",user);
-        return "profile";
+        model.addAttribute(USER_ATTRIBUTE_NAME,user);
+        return "user/profile";
     }
     @GetMapping("/usersList")
     public String showUsers(Model model){
         List<UserAccount> users = userService.getAllUsers();
         model.addAttribute("users",users);
-        return "usersList";
+        return "user/usersList";
     }
 
     @RequestMapping("/setAdmin/{id}")

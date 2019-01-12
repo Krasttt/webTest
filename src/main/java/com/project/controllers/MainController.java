@@ -4,7 +4,6 @@ import com.project.Sevices.TestService;
 import com.project.domain.Result;
 import com.project.domain.Test;
 import com.project.repositories.TestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,10 +17,13 @@ import java.util.List;
 @Controller
 public class MainController {
 
-    @Autowired
-    private TestRepository testRepository;
-    @Autowired
-    private TestService testService;
+    private final TestRepository testRepository;
+    private final TestService testService;
+
+    public MainController(TestRepository testRepository, TestService testService) {
+        this.testRepository = testRepository;
+        this.testService = testService;
+    }
 
     @GetMapping("/tests")
     public String showTests(
@@ -39,7 +41,7 @@ public class MainController {
                 testService.setResult(result.getTest().getId(),result.getId());
             }
         }
-        return "tests";
+        return "test/tests";
     }
 
 

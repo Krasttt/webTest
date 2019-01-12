@@ -1,5 +1,5 @@
-<#import "parts/common.ftl" as c>
-<#include "parts/security.ftl">
+<#import "../parts/common.ftl" as c>
+<#include "../parts/security.ftl">
 <@c.page>
 <div class="card mt-3">
     <h3 class="card-header">${user.firstName} ${user.surName?if_exists}</h3>

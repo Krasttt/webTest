@@ -3,7 +3,6 @@ package com.project.controllers;
 import com.project.Sevices.EditTestService;
 import com.project.domain.Answer;
 import com.project.domain.Question;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +14,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/editTest")
 public class EditTestController {
-    @Autowired
-    private EditTestService editTestService;
+
+    private final EditTestService editTestService;
+
+    public EditTestController(EditTestService editTestService) {
+        this.editTestService = editTestService;
+    }
 
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping()
@@ -29,7 +32,7 @@ public class EditTestController {
         model.addAttribute("questions", questions);
         model.addAttribute("allAnswers", editTestService.getAnswers(questions));
         model.addAttribute("id", id);
-        return "editTest";
+        return "createEditTest/editTest";
     }
 
     @PostMapping("/answers/{id}")

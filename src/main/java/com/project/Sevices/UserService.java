@@ -5,7 +5,6 @@ import com.project.domain.UserAccount;
 import com.project.repositories.ResultRepository;
 import com.project.repositories.RoleRepository;
 import com.project.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,14 +15,18 @@ import java.util.List;
 
 @Service
 public class UserService implements UserDetailsService {
-    @Autowired
-    private  UserRepository userRepository;
-    @Autowired
-    private ResultRepository resultRepository;
-    @Autowired
-    private RoleRepository roleRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final ResultRepository resultRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, ResultRepository resultRepository,
+                       RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.resultRepository = resultRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -1,5 +1,5 @@
-<#import "parts/common.ftl" as c>
-<#include "parts/security.ftl">
+<#import "../parts/common.ftl" as c>
+<#include "../parts/security.ftl">
 <@c.page>
 <h1>Welcome to Tester, ${username}</h1>
 <table class="table table-bordered table-hover">

@@ -2,7 +2,6 @@ package com.project.Sevices;
 
 import com.project.domain.*;
 import com.project.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -10,18 +9,23 @@ import java.util.*;
 
 @Service
 public class TestService {
-    @Autowired
-    private ResultRepository resultRepository;
-    @Autowired
-    private TestRepository testRepository;
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private UserAnswerRepository userAnswerRepository;
-    @Autowired
-    private ResultQuestionRepository resultQuestionRepository;
+    private final ResultRepository resultRepository;
+    private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+    private final UserAnswerRepository userAnswerRepository;
+    private final ResultQuestionRepository resultQuestionRepository;
+
+    public TestService(ResultRepository resultRepository, TestRepository testRepository,
+                       QuestionRepository questionRepository, AnswerRepository answerRepository,
+                       UserAnswerRepository userAnswerRepository, ResultQuestionRepository resultQuestionRepository) {
+        this.resultRepository = resultRepository;
+        this.testRepository = testRepository;
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
+        this.userAnswerRepository = userAnswerRepository;
+        this.resultQuestionRepository = resultQuestionRepository;
+    }
 
 
     public Result createResult(Integer id, UserAccount user) {

@@ -2,7 +2,6 @@ package com.project.controllers;
 
 import com.project.Sevices.CreateTestService;
 import com.project.domain.UserAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -14,13 +13,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class CreateTestController {
-    @Autowired
-    private CreateTestService createTestService;
+    private static final String ID_ATTRIBUTE_NAME="id";
+
+    private final CreateTestService createTestService;
+
+    public CreateTestController(CreateTestService createTestService) {
+        this.createTestService = createTestService;
+    }
 
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/createtest")
     public String createTest() {
-        return "createtest";
+        return "createEditTest/createTest";
     }
 
     @PostMapping("/createtest")
@@ -37,7 +41,7 @@ public class CreateTestController {
             model.addAttribute("durationError","Incorrect duration");
         }
         if (!model.asMap().isEmpty()){
-            return "createtest";
+            return "createEditTest/createTest";
         }
         createTestService.addTest(name, description, duration, user);
         return "redirect:/tests";
@@ -46,15 +50,15 @@ public class CreateTestController {
     @PreAuthorize("hasAuthority('admin')")
     @RequestMapping("/addquestion")
     public String addQuestion(Model model, @RequestParam String id) {
-        model.addAttribute("id",id);
-        return "addQuestion";
+        model.addAttribute(ID_ATTRIBUTE_NAME,id);
+        return "createEditTest/addQuestion";
     }
 
 
     @GetMapping("/addMultiQuestion")
     public String showAddMultiQuestion(Model model, @RequestParam String id) {
-        model.addAttribute("id",id);
-        return "addMultiQuestion";}
+        model.addAttribute(ID_ATTRIBUTE_NAME,id);
+        return "createEditTest/addMultiQuestion";}
 
     @PostMapping("/addMultiQuestion")
     public String addMultiQuestion(@RequestParam String textQuestion, @RequestParam String id,
@@ -71,8 +75,8 @@ public class CreateTestController {
             model.addAttribute("answer2",answer2);
             model.addAttribute("answer3",answer3);
             model.addAttribute("answer4",answer4);
-            model.addAttribute("id",id);
-            return "addMultiQuestion";
+            model.addAttribute(ID_ATTRIBUTE_NAME,id);
+            return "createEditTest/addMultiQuestion";
         }
 
         createTestService.addMultiQuestion(textQuestion, id, check1, check2, check3, check4, answer1, answer2, answer3, answer4);
@@ -82,7 +86,7 @@ public class CreateTestController {
     @GetMapping("/addSingleQuestion")
     public String showSingleQuestion(Model model, @RequestParam String id) {
         model.addAttribute("id",id);
-        return "addSingleQuestion";}
+        return "createEditTest/addSingleQuestion";}
 
     @PostMapping("/addSingleQuestion")
     public String addSingleQuestion(@RequestParam String textQuestion, @RequestParam String corAnswer,
@@ -94,8 +98,8 @@ public class CreateTestController {
             model.addAttribute("answer2",answer2);
             model.addAttribute("answer3",answer3);
             model.addAttribute("answer4",answer4);
-            model.addAttribute("id",id);
-            return "addSingleQuestion";
+            model.addAttribute(ID_ATTRIBUTE_NAME,id);
+            return "createEditTest/addSingleQuestion";
         }
         createTestService.addSingleQuestion(textQuestion, corAnswer, answer2, answer3, answer4, id);
         return "redirect:/tests";
@@ -103,8 +107,8 @@ public class CreateTestController {
 
     @GetMapping("/addWordQuestion")
     public String showWordQuestion(Model model, @RequestParam String id) {
-        model.addAttribute("id",id);
-        return "addWordQuestion";
+        model.addAttribute(ID_ATTRIBUTE_NAME,id);
+        return "createEditTest/addWordQuestion";
     }
 
 
@@ -114,8 +118,8 @@ public class CreateTestController {
         if (textQuestion.length()<5){
             model.addAttribute("lengthError","Short question");
             model.addAttribute("answer",answer);
-            model.addAttribute("id",id);
-            return "addWordQuestion";
+            model.addAttribute(ID_ATTRIBUTE_NAME,id);
+            return "createEditTest/addWordQuestion";
         }
 
         createTestService.addWordQuestion(textQuestion, answer, id);

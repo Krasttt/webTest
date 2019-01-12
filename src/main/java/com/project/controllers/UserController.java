@@ -3,7 +3,6 @@ package com.project.controllers;
 import com.project.Sevices.UserService;
 import com.project.domain.Result;
 import com.project.domain.UserAccount;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,16 +16,24 @@ import java.util.List;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private static final String RESULTS_ATTRIBUTE_NAME="results";
+    private static final String USER_ATTRIBUTE_NAME="user";
+
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
     @GetMapping
     public String showProfile(@AuthenticationPrincipal UserAccount user, Model model){
 
         List<Result> results = userService.getResults(user);
 
-        model.addAttribute("results",results);
-        model.addAttribute("user",user);
-        return "profile";
+        model.addAttribute(RESULTS_ATTRIBUTE_NAME,results);
+        model.addAttribute(USER_ATTRIBUTE_NAME,user);
+        return "user/profile";
     }
 
     @PostMapping("/editInfo")
@@ -41,9 +48,9 @@ public class UserController {
         if (!model.asMap().isEmpty()){
 
             List<Result> results = userService.getResults(user);
-            model.addAttribute("results",results);
-            model.addAttribute("user",user);
-            return "profile";
+            model.addAttribute(RESULTS_ATTRIBUTE_NAME,results);
+            model.addAttribute(USER_ATTRIBUTE_NAME,user);
+            return "user/profile";
         }
         userService.editUserInfo(firstName, surName, user);
         return "redirect:/user";
@@ -56,9 +63,9 @@ public class UserController {
        if (!userService.editUserPassword(curPassword, newPassword,repPassword, user)){
            model.addAttribute("passwordError","Error.Try again...");
            List<Result> results = userService.getResults(user);
-           model.addAttribute("results",results);
-           model.addAttribute("user",user);
-           return "profile";
+           model.addAttribute(RESULTS_ATTRIBUTE_NAME,results);
+           model.addAttribute(USER_ATTRIBUTE_NAME,user);
+           return "user/profile";
        }
         return "redirect:/user";
     }

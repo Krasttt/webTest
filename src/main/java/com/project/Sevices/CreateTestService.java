@@ -4,7 +4,6 @@ import com.project.domain.*;
 import com.project.repositories.AnswerRepository;
 import com.project.repositories.QuestionRepository;
 import com.project.repositories.TestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -13,12 +12,15 @@ import java.util.List;
 
 @Service
 public class CreateTestService {
-    @Autowired
-    private TestRepository testRepository;
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
+    private final TestRepository testRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+
+    public CreateTestService(TestRepository testRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
+        this.testRepository = testRepository;
+        this.questionRepository = questionRepository;
+        this.answerRepository = answerRepository;
+    }
 
     public void addTest(String name, String description, Integer duration, UserAccount user) {
         testRepository.save(new Test(name, description, 0, Duration.ofMinutes(duration), user));
