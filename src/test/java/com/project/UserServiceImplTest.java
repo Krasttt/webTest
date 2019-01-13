@@ -1,6 +1,6 @@
 package com.project;
 
-import com.project.Sevices.UserService;
+import com.project.Sevices.impl.UserServiceImpl;
 import com.project.domain.Role;
 import com.project.domain.UserAccount;
 import com.project.repositories.RoleRepository;
@@ -16,9 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class UserServiceTest {
+public class UserServiceImplTest {
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @MockBean
     private UserRepository userRepository;
@@ -30,7 +30,7 @@ public class UserServiceTest {
         UserAccount user = new UserAccount();
         user.setFirstName("firstName");
         user.setSurName("surName");
-        userService.editUserInfo("newFirstName", "newSurName", user);
+        userServiceImpl.editUserInfo("newFirstName", "newSurName", user);
         Assert.assertTrue(user.getFirstName().equals("newFirstName"));
         Assert.assertTrue(user.getSurName().equals("newSurName"));
         Mockito.verify(userRepository, Mockito.times(1)).save(user);
@@ -52,7 +52,7 @@ public class UserServiceTest {
                 .when(roleRepository)
                 .findByType("admin");
 
-        userService.setAdmin(user.getId());
+        userServiceImpl.setAdmin(user.getId());
 
         Assert.assertTrue(user.getRole().equals("admin"));
         Mockito.verify(userRepository, Mockito.times(1)).save(user);

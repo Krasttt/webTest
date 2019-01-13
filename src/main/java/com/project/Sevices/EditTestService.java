@@ -2,71 +2,51 @@ package com.project.Sevices;
 
 import com.project.domain.Answer;
 import com.project.domain.Question;
-import com.project.domain.Test;
-import com.project.repositories.AnswerRepository;
-import com.project.repositories.QuestionRepository;
-import com.project.repositories.TestRepository;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class EditTestService {
-    private final AnswerRepository answerRepository;
-    private final QuestionRepository questionRepository;
-    private final TestRepository testRepository;
+/**
+ * Сервис предназначен для изменения,удаления вопросов теста.
+ */
+public interface EditTestService {
+    /**
+     * Метод изменяет возможные варианты ответа на вопрос.
+     *
+     * @param id
+     * @param answers
+     * @return List<Answer>
+     */
+    List<Answer> editQuestionAnswers(Integer id, List<Answer> answers);
 
-    public EditTestService(AnswerRepository answerRepository, QuestionRepository questionRepository, TestRepository testRepository) {
-        this.answerRepository = answerRepository;
-        this.questionRepository = questionRepository;
-        this.testRepository = testRepository;
-    }
+    /**
+     * Метод возвращает все ответы на вопросы, которые предали в параметре.
+     *
+     * @param questions
+     * @return List<Answer>
+     */
+    List<Answer> getAnswers(List<Question> questions);
 
-    public List<Answer> editQuestionAnswers(Integer id, List<Answer> answers) {
-        for (Answer answer : answers) {
-            if (answer.getText().equals("")) {
-                answer.setText(answerRepository.findById(answer.getId()).getText());
-            }
-            answer.setQuestion(questionRepository.findById(id));
-        }
-        answerRepository.saveAll(answers);
-        return answers;
-    }
+    /**
+     * Метод возвращает все вопросы, принадлежащие конкретному тесту
+     *
+     * @param id
+     * @return List<Question>
+     */
+    List<Question> getQuestions(Integer id);
 
-    public List<Answer> getAnswers(List<Question> questions) {
-        List<Answer> answers = new ArrayList<>();
+    /**
+     * Метод изменяет текст вопроса и сохраняет изменение в БД.
+     *
+     * @param id
+     * @param questionText
+     */
+    void editQuestionText(Integer id, String questionText);
 
-        for (Question q : questions) {
-            answers.addAll(answerRepository.findByQuestionId(q.getId()));
-        }
-        return answers;
-    }
-
-    public List<Question> getQuestions(Integer id) {
-        return questionRepository.findByTestId(id);
-    }
-
-    public void editQuestionText(Integer id, String questionText) {
-        if (questionText.equals("")) {
-            return;
-        }
-        Question question = questionRepository.findById(id);
-        question.setText(questionText);
-        questionRepository.save(question);
-    }
-
-    public void deleteQuestion(Integer testId,Integer questionId)  {
-        if (questionRepository.findById(questionId)==null) {
-            return;
-        }
-        List<Answer> answers =answerRepository.findByQuestionId(questionId);
-        for (Answer answer:answers) {
-            answerRepository.delete(answer);
-        }
-        questionRepository.delete(questionRepository.findById((questionId)));
-        Test test = testRepository.findById(testId);
-        test.setAmountQuestions(test.getAmountQuestions()-1);
-        testRepository.save(test);
-    }
+    /**
+     * Метод удаляет из БД вопрос.
+     *
+     * @param testId
+     * @param questionId
+     */
+    void deleteQuestion(Integer testId,Integer questionId);
 }

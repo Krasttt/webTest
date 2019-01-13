@@ -1,7 +1,7 @@
 package com.project;
 
 
-import com.project.Sevices.CreateTestService;
+import com.project.Sevices.impl.CreateTestServiceImpl;
 import com.project.domain.Answer;
 import com.project.domain.Question;
 import com.project.domain.Test;
@@ -21,9 +21,9 @@ import java.util.ArrayList;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class CreateTestServiceTest {
+public class CreateTestServiceTestImplImpl {
     @Autowired
-    private CreateTestService createTestService;
+    private CreateTestServiceImpl createTestServiceImpl;
 
     @MockBean
     private TestRepository testRepository;
@@ -43,7 +43,7 @@ public class CreateTestServiceTest {
                 .when(testRepository)
                 .findById(1);
 
-        createTestService.addMultiQuestion("textQuestion",test.getId().toString(),"false","false",
+        createTestServiceImpl.addMultiQuestion("textQuestion",test.getId().toString(),"false","false",
                 "true","true","answer1","answer2","answer3","answer4");
 
         Assert.assertTrue(test.getAmountQuestions()==1);
@@ -62,7 +62,7 @@ public class CreateTestServiceTest {
                 .when(testRepository)
                 .findById(1);
 
-        createTestService.addSingleQuestion("textQuestion","corAnswer","answer2",
+        createTestServiceImpl.addSingleQuestion("textQuestion","corAnswer","answer2",
                 "answer3","answer4",test.getId().toString());
 
         Assert.assertTrue(test.getAmountQuestions()==1);
@@ -80,7 +80,7 @@ public class CreateTestServiceTest {
                 .when(testRepository)
                 .findById(1);
 
-        createTestService.addWordQuestion("textQuestion","corAnswer",test.getId().toString());
+        createTestServiceImpl.addWordQuestion("textQuestion","corAnswer",test.getId().toString());
 
         Assert.assertTrue(test.getAmountQuestions()==1);
         Mockito.verify(testRepository,Mockito.times(1)).save(test);

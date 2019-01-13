@@ -1,72 +1,56 @@
 package com.project.Sevices;
 
-import com.project.domain.*;
-import com.project.repositories.AnswerRepository;
-import com.project.repositories.QuestionRepository;
-import com.project.repositories.TestRepository;
-import org.springframework.stereotype.Service;
+import com.project.domain.UserAccount;
+/**
+ * Сервис предназначен для создания теста и добавления вопросов в него.
+ */
+public interface CreateTestService {
+    /**
+     * Метод создает тест по заданным параметрам и сохраняет его в БД.
+     *
+     * @param name
+     * @param description
+     * @param duration
+     * @param user
+     */
+    void addTest(String name, String description, Integer duration, UserAccount user);
 
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
+    /**
+     * Метод создает вопрос (типа "MULTI") и ответы по заданным параметрам и сохраняет эти данные в БД.
+     *
+     * @param textQuestion
+     * @param id
+     * @param check1
+     * @param check2
+     * @param check3
+     * @param check4
+     * @param answer1
+     * @param answer2
+     * @param answer3
+     * @param answer4
+     */
+    void addMultiQuestion(String textQuestion, String id, String check1, String check2, String check3, String check4,
+                          String answer1, String answer2, String answer3, String answer4);
 
-@Service
-public class CreateTestService {
-    private final TestRepository testRepository;
-    private final QuestionRepository questionRepository;
-    private final AnswerRepository answerRepository;
+    /**
+     * Метод создает вопрос (типа "SINGLE") и ответы по заданным параметрам и сохраняет эти данные в БД.
+     *
+     * @param textQuestion
+     * @param corAnswer
+     * @param answer2
+     * @param answer3
+     * @param answer4
+     * @param id
+     */
+    void addSingleQuestion(String textQuestion, String corAnswer, String answer2,
+                           String answer3, String answer4, String id);
 
-    public CreateTestService(TestRepository testRepository, QuestionRepository questionRepository, AnswerRepository answerRepository) {
-        this.testRepository = testRepository;
-        this.questionRepository = questionRepository;
-        this.answerRepository = answerRepository;
-    }
-
-    public void addTest(String name, String description, Integer duration, UserAccount user) {
-        testRepository.save(new Test(name, description, 0, Duration.ofMinutes(duration), user));
-    }
-
-    public void addMultiQuestion(String textQuestion, String id, String check1, String check2, String check3, String check4,
-                                 String answer1, String answer2, String answer3, String answer4) {
-        Test test = testRepository.findById(Integer.parseInt(id));
-        test.setAmountQuestions(test.getAmountQuestions() + 1);
-        testRepository.save(test);
-
-        Question question = new Question(textQuestion, Type.MULTI, test);
-        questionRepository.save(question);
-
-        List<Answer> answers = new ArrayList<>();
-        answers.add(new Answer(answer1, check1.equals("true"), question));
-        answers.add(new Answer(answer2, check2.equals("true"), question));
-        answers.add(new Answer(answer3, check3.equals("true"), question));
-        answers.add(new Answer(answer4, check4.equals("true"), question));
-        answerRepository.saveAll(answers);
-    }
-
-    public void addSingleQuestion(String textQuestion, String corAnswer, String answer2,
-                                  String answer3, String answer4, String id) {
-        Test test = testRepository.findById(Integer.parseInt(id));
-        test.setAmountQuestions(test.getAmountQuestions() + 1);
-        testRepository.save(test);
-        Question question = new Question(textQuestion, Type.SINGLE, test);
-        questionRepository.save(question);
-
-        List<Answer> answers = new ArrayList<>();
-        answers.add(new Answer(corAnswer, true, question));
-        answers.add(new Answer(answer2, false, question));
-        answers.add(new Answer(answer3, false, question));
-        answers.add(new Answer(answer4, false, question));
-        answerRepository.saveAll(answers);
-    }
-
-    public void addWordQuestion(String textQuestion, String answer, String id) {
-        Test test = testRepository.findById(Integer.parseInt(id));
-        test.setAmountQuestions(test.getAmountQuestions() + 1);
-        testRepository.save(test);
-
-        Question question = new Question(textQuestion, Type.WORD, test);
-        questionRepository.save(question);
-
-        answerRepository.save(new Answer(answer, true, question));
-    }
+    /**
+     * Метод создает вопрос (типа "WORD") и ответ по заданным параметрам и сохраняет эти данные в БД.
+     *
+     * @param textQuestion
+     * @param answer
+     * @param id
+     */
+    void addWordQuestion(String textQuestion, String answer, String id);
 }

@@ -1,6 +1,6 @@
 package com.project.controllers;
 
-import com.project.Sevices.UserService;
+import com.project.Sevices.impl.UserServiceImpl;
 import com.project.domain.Result;
 import com.project.domain.UserAccount;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,16 +20,16 @@ public class UserController {
     private static final String RESULTS_ATTRIBUTE_NAME="results";
     private static final String USER_ATTRIBUTE_NAME="user";
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping
     public String showProfile(@AuthenticationPrincipal UserAccount user, Model model){
 
-        List<Result> results = userService.getResults(user);
+        List<Result> results = userServiceImpl.getResults(user);
 
         model.addAttribute(RESULTS_ATTRIBUTE_NAME,results);
         model.addAttribute(USER_ATTRIBUTE_NAME,user);
@@ -47,12 +47,12 @@ public class UserController {
         }
         if (!model.asMap().isEmpty()){
 
-            List<Result> results = userService.getResults(user);
+            List<Result> results = userServiceImpl.getResults(user);
             model.addAttribute(RESULTS_ATTRIBUTE_NAME,results);
             model.addAttribute(USER_ATTRIBUTE_NAME,user);
             return "user/profile";
         }
-        userService.editUserInfo(firstName, surName, user);
+        userServiceImpl.editUserInfo(firstName, surName, user);
         return "redirect:/user";
     }
 
@@ -60,9 +60,9 @@ public class UserController {
     public String userEditPassword(@AuthenticationPrincipal UserAccount user,@RequestParam String curPassword,
                            @RequestParam String newPassword,@RequestParam String repPassword,Model model){
 
-       if (!userService.editUserPassword(curPassword, newPassword,repPassword, user)){
+       if (!userServiceImpl.editUserPassword(curPassword, newPassword,repPassword, user)){
            model.addAttribute("passwordError","Error.Try again...");
-           List<Result> results = userService.getResults(user);
+           List<Result> results = userServiceImpl.getResults(user);
            model.addAttribute(RESULTS_ATTRIBUTE_NAME,results);
            model.addAttribute(USER_ATTRIBUTE_NAME,user);
            return "user/profile";

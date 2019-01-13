@@ -1,7 +1,7 @@
 package com.project;
 
 
-import com.project.Sevices.EditTestService;
+import com.project.Sevices.impl.EditTestServiceImpl;
 import com.project.domain.Answer;
 import com.project.domain.Question;
 import com.project.repositories.AnswerRepository;
@@ -22,9 +22,9 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class EditTestServiceTest {
+public class EditTestServiceTestImplImpl {
     @Autowired
-    private EditTestService editTestService;
+    private EditTestServiceImpl editTestServiceImpl;
 
     @MockBean
     private AnswerRepository answerRepository;
@@ -42,7 +42,7 @@ public class EditTestServiceTest {
                 .when(questionRepository)
                 .findById(question.getId());
 
-        editTestService.editQuestionText(question.getId(),"New text of question");
+        editTestServiceImpl.editQuestionText(question.getId(),"New text of question");
         Assert.assertTrue(question.getText().equals("New text of question"));
         Mockito.verify(questionRepository,Mockito.times(1)).save(ArgumentMatchers.any(Question.class));
     }
@@ -78,7 +78,7 @@ public class EditTestServiceTest {
                 .when(answerRepository)
                 .findById(4);
 
-        editTestService.editQuestionAnswers(question.getId(),answers);
+        editTestServiceImpl.editQuestionAnswers(question.getId(),answers);
 
         Mockito.verify(answerRepository,Mockito.times(1)).saveAll(ArgumentMatchers.anyIterable());
     }
@@ -108,7 +108,7 @@ public class EditTestServiceTest {
         Mockito.doReturn(answers)
                 .when(answerRepository)
                 .findByQuestionId(question.getId());
-        editTestService.deleteQuestion(test.getId(),question.getId());
+        editTestServiceImpl.deleteQuestion(test.getId(),question.getId());
 
         Mockito.verify(answerRepository,Mockito.times(answers.size())).delete(ArgumentMatchers.any(Answer.class));
         Mockito.verify(questionRepository,Mockito.times(1)).delete(ArgumentMatchers.any(Question.class));

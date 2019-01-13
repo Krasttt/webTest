@@ -1,6 +1,6 @@
 package com.project.controllers;
 
-import com.project.Sevices.TestService;
+import com.project.Sevices.impl.TestServiceImpl;
 import com.project.domain.Result;
 import com.project.domain.Test;
 import com.project.repositories.TestRepository;
@@ -18,11 +18,11 @@ import java.util.List;
 public class MainController {
 
     private final TestRepository testRepository;
-    private final TestService testService;
+    private final TestServiceImpl testServiceImpl;
 
-    public MainController(TestRepository testRepository, TestService testService) {
+    public MainController(TestRepository testRepository, TestServiceImpl testServiceImpl) {
         this.testRepository = testRepository;
-        this.testService = testService;
+        this.testServiceImpl = testServiceImpl;
     }
 
     @GetMapping("/tests")
@@ -35,10 +35,10 @@ public class MainController {
         } else tests = testRepository.findAllBy();
         model.addAttribute("tests", tests);
 
-        List<Result> activeResults = testService.getAllActiveResult(true);
+        List<Result> activeResults = testServiceImpl.getAllActiveResult(true);
         for (Result result: activeResults) {
             if (new Date().getTime()-result.getStartTest().getTime()>=result.getTest().getDuration().toMillis()){
-                testService.setResult(result.getTest().getId(),result.getId());
+                testServiceImpl.setResult(result.getTest().getId(),result.getId());
             }
         }
         return "test/tests";

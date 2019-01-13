@@ -1,6 +1,6 @@
 package com.project;
 
-import com.project.Sevices.TestService;
+import com.project.Sevices.impl.TestServiceImpl;
 import com.project.domain.*;
 import com.project.repositories.*;
 import org.junit.Assert;
@@ -18,9 +18,9 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class TestServiceTest {
+public class TestServiceTestImpl {
     @Autowired
-    private TestService testService;
+    private TestServiceImpl testServiceImpl;
 
     @MockBean
     private ResultRepository resultRepository;
@@ -106,7 +106,7 @@ public class TestServiceTest {
         Mockito.doReturn(result)
                 .when(resultRepository)
                 .findById(result.getId());
-        testService.setResult(test.getId(),result.getId());
+        testServiceImpl.setResult(test.getId(),result.getId());
 
         Assert.assertTrue(result.getGrade()==4);
         Assert.assertFalse(result.isActive());

@@ -1,6 +1,6 @@
 package com.project.controllers;
 
-import com.project.Sevices.EditTestService;
+import com.project.Sevices.impl.EditTestServiceImpl;
 import com.project.domain.Answer;
 import com.project.domain.Question;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping("/editTest")
 public class EditTestController {
 
-    private final EditTestService editTestService;
+    private final EditTestServiceImpl editTestServiceImpl;
 
-    public EditTestController(EditTestService editTestService) {
-        this.editTestService = editTestService;
+    public EditTestController(EditTestServiceImpl editTestServiceImpl) {
+        this.editTestServiceImpl = editTestServiceImpl;
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -28,9 +28,9 @@ public class EditTestController {
             @RequestParam Integer id
     ) {
 
-        List<Question> questions = editTestService.getQuestions(id);
+        List<Question> questions = editTestServiceImpl.getQuestions(id);
         model.addAttribute("questions", questions);
-        model.addAttribute("allAnswers", editTestService.getAnswers(questions));
+        model.addAttribute("allAnswers", editTestServiceImpl.getAnswers(questions));
         model.addAttribute("id", id);
         return "createEditTest/editTest";
     }
@@ -38,20 +38,20 @@ public class EditTestController {
     @PostMapping("/answers/{id}")
     @ResponseBody
     public List<Answer> editQuestionAnswers(@PathVariable Integer id, @RequestBody List<Answer> answers) {
-        editTestService.editQuestionAnswers(id, answers);
+        editTestServiceImpl.editQuestionAnswers(id, answers);
         return answers;
     }
     @PostMapping("/question/{id}")
     @ResponseBody
     public String editQuestionText  (@PathVariable Integer id, @RequestBody String questionText) {
-        editTestService.editQuestionText(id,questionText);
+        editTestServiceImpl.editQuestionText(id,questionText);
         return questionText;
     }
 
     @GetMapping("/delete/{testId}/{questionId}")
     @Transactional
     public String deleteQuestion(@PathVariable Integer testId,@PathVariable Integer questionId){
-        editTestService.deleteQuestion(testId,questionId);
+        editTestServiceImpl.deleteQuestion(testId,questionId);
         return "redirect:/editTest?id="+testId;
     }
 }

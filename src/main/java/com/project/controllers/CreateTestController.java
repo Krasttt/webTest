@@ -1,6 +1,6 @@
 package com.project.controllers;
 
-import com.project.Sevices.CreateTestService;
+import com.project.Sevices.impl.CreateTestServiceImpl;
 import com.project.domain.UserAccount;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CreateTestController {
     private static final String ID_ATTRIBUTE_NAME="id";
 
-    private final CreateTestService createTestService;
+    private final CreateTestServiceImpl createTestServiceImpl;
 
-    public CreateTestController(CreateTestService createTestService) {
-        this.createTestService = createTestService;
+    public CreateTestController(CreateTestServiceImpl createTestServiceImpl) {
+        this.createTestServiceImpl = createTestServiceImpl;
     }
 
     @PreAuthorize("hasAuthority('admin')")
@@ -43,7 +43,7 @@ public class CreateTestController {
         if (!model.asMap().isEmpty()){
             return "createEditTest/createTest";
         }
-        createTestService.addTest(name, description, duration, user);
+        createTestServiceImpl.addTest(name, description, duration, user);
         return "redirect:/tests";
     }
 
@@ -79,7 +79,7 @@ public class CreateTestController {
             return "createEditTest/addMultiQuestion";
         }
 
-        createTestService.addMultiQuestion(textQuestion, id, check1, check2, check3, check4, answer1, answer2, answer3, answer4);
+        createTestServiceImpl.addMultiQuestion(textQuestion, id, check1, check2, check3, check4, answer1, answer2, answer3, answer4);
         return "redirect:/tests";
     }
 
@@ -101,7 +101,7 @@ public class CreateTestController {
             model.addAttribute(ID_ATTRIBUTE_NAME,id);
             return "createEditTest/addSingleQuestion";
         }
-        createTestService.addSingleQuestion(textQuestion, corAnswer, answer2, answer3, answer4, id);
+        createTestServiceImpl.addSingleQuestion(textQuestion, corAnswer, answer2, answer3, answer4, id);
         return "redirect:/tests";
     }
 
@@ -122,7 +122,7 @@ public class CreateTestController {
             return "createEditTest/addWordQuestion";
         }
 
-        createTestService.addWordQuestion(textQuestion, answer, id);
+        createTestServiceImpl.addWordQuestion(textQuestion, answer, id);
         return "redirect:/tests";
     }
 

@@ -1,6 +1,6 @@
 package com.project;
 
-import com.project.Sevices.RegistrationService;
+import com.project.Sevices.impl.RegistrationServiceImpl;
 import com.project.domain.UserAccount;
 import com.project.repositories.UserRepository;
 import org.junit.Assert;
@@ -14,9 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
-public class RegistrationServiceTest {
+public class RegistrationServiceImplTest {
     @Autowired
-    private RegistrationService registrationService;
+    private RegistrationServiceImpl registrationServiceImpl;
     @MockBean
     private UserRepository userRepository;
 
@@ -24,7 +24,7 @@ public class RegistrationServiceTest {
     public void addUserTest() throws Exception{
         UserAccount user = new UserAccount();
         user.setPassword("password");
-        boolean isUserCreated = registrationService.addUser(user);
+        boolean isUserCreated = registrationServiceImpl.addUser(user);
 
         Assert.assertTrue(isUserCreated);
         Assert.assertTrue(user.isActive());
@@ -39,7 +39,7 @@ public class RegistrationServiceTest {
         Mockito.doReturn(new UserAccount())
                 .when(userRepository)
                 .findByUsername("John");
-        boolean isUserCreated = registrationService.addUser(user);
+        boolean isUserCreated = registrationServiceImpl.addUser(user);
 
         Assert.assertFalse(isUserCreated);
         Mockito.verify(userRepository, Mockito.times(0)).save(user);

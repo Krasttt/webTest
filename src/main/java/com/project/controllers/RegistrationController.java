@@ -1,6 +1,6 @@
 package com.project.controllers;
 
-import com.project.Sevices.RegistrationService;
+import com.project.Sevices.impl.RegistrationServiceImpl;
 import com.project.domain.UserAccount;
 import com.project.domain.UserRegistrationForm;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,10 @@ import java.util.Map;
 public class RegistrationController {
     private static final String USER_ATTRIBUTE_NAME="user";
 
-    private final RegistrationService registrationService;
+    private final RegistrationServiceImpl registrationServiceImpl;
 
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
+    public RegistrationController(RegistrationServiceImpl registrationServiceImpl) {
+        this.registrationServiceImpl = registrationServiceImpl;
     }
 
     @GetMapping("/registration")
@@ -47,7 +47,7 @@ public class RegistrationController {
         user.setSurName(userAccount.getSurName());
         user.setPassword(userAccount.getPassword());
 
-        if (!registrationService.addUser(user)) {
+        if (!registrationServiceImpl.addUser(user)) {
             model.addAttribute(USER_ATTRIBUTE_NAME,userAccount);
             model.addAttribute("userError","User already exist!");
             return "auth/registration";
