@@ -55,6 +55,7 @@ public interface UserService {
      * @param repPassword
      * @param user
      * @return boolean
+     *
      */
     boolean editUserPassword(String curPassword, String newPassword, String repPassword, UserAccount user);
 
