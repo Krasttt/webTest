@@ -1,6 +1,9 @@
 package com.project;
 
+import com.project.Sevices.impl.RegistrationServiceImpl;
 import com.project.controllers.MainController;
+import com.project.domain.UserAccount;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,18 @@ public class LoginTest {
     private MainController mainController;
 
     @Autowired
+    private RegistrationServiceImpl registrationServiceImpl;
+    @Before
+    public void init(){
+        UserAccount user = new UserAccount();
+        user.setUsername("testAdmin");
+        user.setFirstName("testAdmin");
+        user.setSurName("testAdmin");
+        user.setPassword("testPassword");
+        registrationServiceImpl.addUser(user);
+
+    }
+    @Autowired
     private MockMvc mockMvc;
 
     @Test
@@ -41,6 +56,15 @@ public class LoginTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("http://localhost/login"));
     }
+
+    @Test
+    public void correctLoginTest() throws Exception {
+        this.mockMvc.perform(formLogin().user("testAdmin").password("testPassword"))
+                .andDo(print())
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
 
     @Test
     public void badCredentials() throws Exception {

@@ -4,6 +4,7 @@ import com.project.Sevices.impl.RegistrationServiceImpl;
 import com.project.domain.UserAccount;
 import com.project.repositories.UserRepository;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -17,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class RegistrationServiceImplTest {
     @Autowired
     private RegistrationServiceImpl registrationServiceImpl;
+
     @MockBean
     private UserRepository userRepository;
 
