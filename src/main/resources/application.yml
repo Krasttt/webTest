@@ -1,0 +1,19 @@
+spring:
+  profiles.active: ${ACTIVE_PROFILE:dev}
+  jpa:
+    generate-ddl: true
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+  freemarker:
+    expose-request-attributes: true
+---
+spring:
+  profiles: prod
+  datasource:
+    url: ${MVC_DB_CONNECTION_URL}
+    username: ${MVC_DB_USER}
+    password: ${MVC_DB_PASSWORD}
+---
+spring:
+  profiles: dev

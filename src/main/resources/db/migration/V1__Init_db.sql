@@ -3,7 +3,7 @@ CREATE TABLE role
   id serial NOT NULL,
   type character varying(255),
   CONSTRAINT role_pkey PRIMARY KEY (id)
-)
+);
 
 CREATE TABLE user_account
 (
@@ -16,9 +16,8 @@ CREATE TABLE user_account
   username character varying(255),
   CONSTRAINT user_account_pkey PRIMARY KEY (id),
   CONSTRAINT fk4j8uoaeve853dcbl0tjd0yoq0 FOREIGN KEY (role_id)
-      REFERENCES role (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+      REFERENCES role (id)
+);
 
 CREATE TABLE test
 (
@@ -30,9 +29,8 @@ CREATE TABLE test
   user_id integer,
   CONSTRAINT test_pkey PRIMARY KEY (id),
   CONSTRAINT fk2vjciaik087w2y362oq7db1bi FOREIGN KEY (user_id)
-      REFERENCES user_account (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+      REFERENCES user_account (id)
+);
 
 CREATE TABLE question
 (
@@ -42,9 +40,8 @@ CREATE TABLE question
   test_id integer,
   CONSTRAINT question_pkey PRIMARY KEY (id),
   CONSTRAINT fk8hejcpbbiq1qje11346akp3uj FOREIGN KEY (test_id)
-      REFERENCES test (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+      REFERENCES test (id)
+);
 
 CREATE TABLE answer
 (
@@ -54,9 +51,8 @@ CREATE TABLE answer
   question_id integer,
   CONSTRAINT answer_pkey PRIMARY KEY (id),
   CONSTRAINT fk8frr4bcabmmeyyu60qt7iiblo FOREIGN KEY (question_id)
-      REFERENCES question (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+      REFERENCES question (id)
+);
 
 
 CREATE TABLE result
@@ -71,12 +67,10 @@ CREATE TABLE result
   user_id integer,
   CONSTRAINT result_pkey PRIMARY KEY (id),
   CONSTRAINT fk9msc4h42pspkdvuv65f3ikqsh FOREIGN KEY (user_id)
-      REFERENCES user_account (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      REFERENCES user_account (id) ,
   CONSTRAINT fksyvhlvlv6k1d4gkqvu12rha0j FOREIGN KEY (test_id)
-      REFERENCES test (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+      REFERENCES test (id)
+);
 
 CREATE TABLE result_question
 (
@@ -86,10 +80,7 @@ CREATE TABLE result_question
   type character varying(255),
   result_id integer,
   CONSTRAINT result_question_pkey PRIMARY KEY (id)
-)
-
-
-
+);
 
 CREATE TABLE user_answer
 (
@@ -102,12 +93,9 @@ CREATE TABLE user_answer
   result_question_id integer,
   CONSTRAINT user_answer_pkey PRIMARY KEY (id),
   CONSTRAINT fkm87orx1qcxqk2qhjtio98dnkq FOREIGN KEY (result_question_id)
-      REFERENCES result_question (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      REFERENCES result_question (id) ,
   CONSTRAINT fkn3mpsvs6635jpoqmtaq2owfmk FOREIGN KEY (user_account_id)
-      REFERENCES user_account (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
+      REFERENCES user_account (id) ,
   CONSTRAINT fkpsk90eok3ounaet92hku3gny1 FOREIGN KEY (question_id)
-      REFERENCES question (id) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+      REFERENCES question (id)
+);

@@ -43,14 +43,6 @@ public class LoginTest {
     }
 
     @Test
-    public void correctLoginTest() throws Exception {
-        this.mockMvc.perform(formLogin().user("testAdmin").password("testPassword"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"));
-    }
-
-    @Test
     public void badCredentials() throws Exception {
         this.mockMvc.perform(formLogin().user("error").password("error"))
                 .andDo(print())
